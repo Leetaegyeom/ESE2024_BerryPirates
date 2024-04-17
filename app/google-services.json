@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "7923358227",
+    "project_id": "feetposes",
+    "storage_bucket": "feetposes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7923358227:android:26d056898d04b52cfcbde6",
+        "android_client_info": {
+          "package_name": "com.example.practice_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXT0PMgj0cvAkKhxXg181u4-TdnkPeLe4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <!-- 왼발 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal">
+
+
+
+    </LinearLayout>
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:columnCount="5"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/leftFootTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="왼발"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+
+            android:textSize="24sp"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/rightFootTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오른발"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+
+            android:textSize="24sp"
+            android:layout_marginTop="16dp"/>
+        <TextView
+            android:id="@+id/heightTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="높이"
+            android:layout_rowSpan="2"
+            android:layout_gravity="center"
+            android:textSize="24sp"
+            />
+        <TextView
+            android:id="@+id/leftHeightTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_columnSpan="2"
+            android:text="0"
+            android:layout_gravity="center"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/rightHeightTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:text="0"
+            android:layout_gravity="center"
+            android:textSize="24sp" />
+
+
+
+        <Button
+            android:id="@+id/leftHeightDecreaseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"/>
+        <Button
+            android:id="@+id/leftHeightIncreaseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"/>
+
+
+        <Button
+            android:id="@+id/rightHeightDecreaseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"/>
+        <Button
+            android:id="@+id/rightHeightIncreaseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"/>
+        <TextView
+            android:id="@+id/angleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="각도"
+            android:layout_rowSpan="2"
+            android:layout_gravity="center"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/leftAngleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="1"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+            android:text="0"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/rightAngleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+
+            android:text="0"
+            android:textSize="24sp" />
+
+
+
+
+        <Button
+            android:id="@+id/leftAngleDecreaseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"/>
+        <Button
+            android:id="@+id/leftAngleIncreaseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"/>
+
+
+
+        <Button
+            android:id="@+id/rightAngleDecreaseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"/>
+        <Button
+            android:id="@+id/rightAngleIncreaseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"/>
+
+
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/twoFeetAtTheSameTimeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="두 발 동시에 조절하기"
+        android:layout_marginTop="250dp"/>
+
+    <Button
+        android:id="@+id/savePoseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자세 저장하기"/>
+
+</LinearLayout>
