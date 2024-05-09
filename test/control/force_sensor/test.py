@@ -35,10 +35,10 @@ f = ADS.toVoltage()
 
 while True :
     val_0 = ADS.readADC(0)
-    val_1 = ADS.readADC(1)
+    # val_1 = ADS.readADC(1)
     # val_2 = ADS.readADC(2)
     # val_3 = ADS.readADC(3)
-    # print("Analog0: {0:d}\t{1:.3f} V".format(val_0, val_0 * f))
+    print("Analog0: {0:d}\t{1:.3f} V".format(val_0, val_0 * f))
     # print("Analog1: {0:d}\t{1:.3f} V".format(val_1, val_1 * f))
     # print("Analog2: {0:d}\t{1:.3f} V".format(val_2, val_2 * f))
     # print("Analog3: {0:d}\t{1:.3f} V".format(val_3, val_3 * f))
@@ -47,17 +47,17 @@ while True :
     # print("Front: {0:d}".format(val_0))
     # print("\t\tBack: {0:d}".format(val_1))
     
-    front, back = val_0, val_1
+    # front, back = val_0, val_1
 
-    if abs(front) < 1000 and abs(back) < 1000:
-        print("GO UP")
-    else:
-        if front - back > 5000:
-            print("FRONT DOWN")
-        elif abs(front - back) < 5000:
-            print("GO DOWN")
-        else:
-            print("BACK DOWN")
+    # if abs(front) < 1000 and abs(back) < 1000:
+    #     print("GO UP")
+    # else:
+    #     if front - back > 5000:
+    #         print("FRONT DOWN")
+    #     elif abs(front - back) < 5000:
+    #         print("GO DOWN")
+    #     else:
+    #         print("BACK DOWN")
 
     time.sleep(0.1)
 

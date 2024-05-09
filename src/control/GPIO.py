@@ -11,7 +11,6 @@ class GPIO_STRUCT:
         self.IN1_PIN = None
         self.IN2_PIN = None
 
-
 class GPIO_SETTING:
     @staticmethod
     def getSensorParams(Model):
@@ -64,58 +63,7 @@ class GPIO_SETTING:
 
             model_params.ENA_PIN = 25
             model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7
-
-        ### FORCE SENSOR ###
-        elif Model == 'force_right_front':
-
-            model_params.Model = 'force_right_front'
-
-            model_params.ENA_PIN = 25
-            model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7
-
-        elif Model == 'force_right_back':
-
-            model_params.Model = 'force_right_back'
-
-            model_params.ENA_PIN = 25
-            model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7
-
-        elif Model == 'force_left_front':
-
-            model_params.Model = 'force_left_front'
-
-            model_params.ENA_PIN = 25
-            model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7    
-
-        elif Model == 'force_left_back':
-
-            model_params.Model = 'force_left_back'
-
-            model_params.ENA_PIN = 25
-            model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7
-        
-        ### POTENTIOMETER ###
-        elif Model == 'potentiometer_right':
-
-            model_params.Model = 'potentiometer_right'
-
-            model_params.ENA_PIN = 25
-            model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7    
-
-        elif Model == 'potentiometer_left':
-
-            model_params.Model = 'potentiometer_left'
-
-            model_params.ENA_PIN = 25
-            model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7               
-
+            model_params.IN2_PIN = 7      
 
         else:
             raise ValueError('Model invalid')
