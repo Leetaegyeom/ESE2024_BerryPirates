@@ -10,6 +10,10 @@ class Potentiometer:
 
         self.ADS = ADS1x15.ADS1115(self.I2C_BUS_ID, 0x48)
         self.ADS.setGain(self.ADS.PGA_4_096V)
+
+        self.MAX_ANGLE = 270
+        self.MAX_VALUE = 26366
+        self.RATIO = self.MAX_ANGLE/self.MAX_VALUE
     
     def measure_value(self):
         left_value = self.ADS.readADC(self.LEFT_PIN)
@@ -17,21 +21,10 @@ class Potentiometer:
 
         return left_value, right_value
 
-    def value_to_angle(self): ## need to change
+    def get_angle(self): ## need to change
         left_value, right_value = self.measure_value()
 
-        if left_front_value - left_back_value > 5000:
-            self.left = "FRONT DOWN"
-        elif abs(left_front_value - left_back_value) < 5000:
-            self.left = "FRONT BACK DOWN"
-        else:
-            self.left = "BACK DOWN"
-        
-        if right_front_value - right_back_value > 5000:
-            self.right = "FRONT DOWN"
-        elif abs(right_front_value - right_back_value) < 5000:
-            self.right = "FRONT BACK DOWN"
-        else:
-            self.right = "BACK DOWN"
+        left_angle = int(left_value * self.RATIO)
+        right_angle = int(right_value * self.RATIO)
 
-        return self.right, self.left
+        return left_angle, right_angle

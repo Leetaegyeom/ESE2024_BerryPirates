@@ -20,7 +20,7 @@ class GPIO_SETTING:
         ### ULTRASONIC SENSOR ###
         if Model == 'ultrasonic_right':
 
-            model_params.Model = 'ultrasonic_r'
+            model_params.Model = 'ultrasonic_right'
 
             model_params.TRIG_PIN = 23
             model_params.ECHO_PIN = 24
