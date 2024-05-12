@@ -35,7 +35,7 @@ class GPIO_SETTING:
         ### ACTUATOR ###
         elif Model == 'actuator_right_height':
 
-            model_params.Model = 'aactuator_right_height'
+            model_params.Model = 'actuator_right_height'
 
             model_params.ENA_PIN = 25
             model_params.IN1_PIN = 8

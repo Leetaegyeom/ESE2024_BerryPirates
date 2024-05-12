@@ -27,18 +27,24 @@ class ForceSensor:
     def guess_user_purpose(self):
         left_front_value, left_back_value, right_front_value, rigth_back_value = self.measure_value()
 
-        if left_front_value - left_back_value > 5000:
-            self.left = "FRONT DOWN"
-        elif abs(left_front_value - left_back_value) < 5000:
-            self.left = "FRONT BACK DOWN"
+        if abs(left_front_value) < 1000 and abs(left_back_value) < 1000:
+            self.left = "FRONT BACK UP" # 위로 움직임
         else:
-            self.left = "BACK DOWN"
+            if left_front_value - left_back_value > 5000:
+                self.left = "FRONT DOWN" # 앞쪽이 낮아짐
+            elif abs(left_front_value - left_back_value) < 5000:
+                self.left = "FRONT BACK DOWN" # 아래로 움직임
+            else:
+                self.left = "BACK DOWN" # 뒤쪽이 낮아짐 
         
-        if right_front_value - right_back_value > 5000:
-            self.right = "FRONT DOWN"
-        elif abs(right_front_value - right_back_value) < 5000:
-            self.right = "FRONT BACK DOWN"
+        if abs(right_front_value) < 1000 and abs(right_back_value) < 1000:
+            self.right = "FRONT BACK UP" # 위로 움직임
         else:
-            self.right = "BACK DOWN"
+            if right_front_value - right_back_value > 5000:
+                self.right = "FRONT DOWN" # 앞쪽이 낮아짐
+            elif abs(right_front_value - right_back_value) < 5000:
+                self.right = "FRONT BACK DOWN" # 아래로 움직임
+            else:
+                self.right = "BACK DOWN" # 뒤쪽이 낮아짐 
 
         return self.right, self.left
