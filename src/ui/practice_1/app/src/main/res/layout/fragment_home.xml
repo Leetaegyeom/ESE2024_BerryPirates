@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF000000"
+
+    tools:context=".HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="자유분발"
+        android:textColor="#FFFFFFFF"
+        android:gravity="center"
+        android:textSize="50sp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="편안한 자세로\n 발 받침대를 사용하세요"
+        android:textColor="#FFFFFFFF"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textSize="30dp"
+        android:layout_marginTop="16dp"/>
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:src="@drawable/berry_pirates" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="16dp"
+
+        android:layout_marginTop="16dp"
+        android:background="#FFFFFFFF"
+        android:text="전원 off" />
+    <Button
+        android:id="@+id/foot_control_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="발로 조절"/>
+    <Button
+        android:id="@+id/app_control_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:text="앱으로 조절"/>
+
+
+</FrameLayout>
