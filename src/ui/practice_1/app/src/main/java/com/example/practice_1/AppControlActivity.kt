@@ -1,5 +1,8 @@
 package com.example.practice_1
 
+import android.bluetooth.*
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -7,19 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.firestore.ktx.firestore
-
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.practice_1.ui.theme.Practice_1Theme
+import java.util.*
 
 class AppControlActivity : AppCompatActivity() {
-    // 왼발 높이와 각도, 오른발 높이와 각도의 초기값 설정
     private var leftHeight = 0
     private var leftAngle = 0
     private var rightHeight = 0
@@ -27,12 +20,23 @@ class AppControlActivity : AppCompatActivity() {
     var isTwoFeetAtTheSameTimeEnabled = false
     val db = Firebase.firestore
 
+    // Bluetooth variables
+    private lateinit var bluetoothAdapter: BluetoothAdapter
+    private var bluetoothGatt: BluetoothGatt? = null
+    private var appControlCharacteristic: BluetoothGattCharacteristic? = null
 
+    private val UART_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
+    private val APP_CONTROL_CHARACTERISTIC_UUID = UUID.fromString("6e400004-b5a3-f393-e0a9-e50e24dcca9e")
+
+    private val sharedPrefs: SharedPreferences by lazy {
+        getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_control)
 
+        bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
 
         // 왼발 높이 조절 버튼
         val leftHeightIncreaseButton: Button = findViewById(R.id.leftHeightIncreaseButton)
@@ -48,14 +52,13 @@ class AppControlActivity : AppCompatActivity() {
         val rightAngleDecreaseButton: Button = findViewById(R.id.rightAngleDecreaseButton)
         val rightAngleTextView: TextView = findViewById(R.id.rightAngleTextView)
 
-
         leftHeightIncreaseButton.setOnClickListener {
             if (isTwoFeetAtTheSameTimeEnabled) {
                 leftHeight = (leftHeight + 1).coerceIn(0, 5)
                 rightHeight = (rightHeight + 1).coerceIn(0, 5)
                 leftHeightTextView.text = leftHeight.toString()
                 rightHeightTextView.text = rightHeight.toString()
-            }else {
+            } else {
                 leftHeight = (leftHeight + 1).coerceIn(0, 5)
                 leftHeightTextView.text = leftHeight.toString()
             }
@@ -67,41 +70,35 @@ class AppControlActivity : AppCompatActivity() {
                 rightHeight = (rightHeight - 1).coerceIn(0, 5)
                 leftHeightTextView.text = leftHeight.toString()
                 rightHeightTextView.text = rightHeight.toString()
-            }else {
+            } else {
                 leftHeight = (leftHeight - 1).coerceIn(0, 5)
                 leftHeightTextView.text = leftHeight.toString()
             }
         }
 
-        // 왼발 각도 조절 버튼
-
-
         leftAngleIncreaseButton.setOnClickListener {
             if (isTwoFeetAtTheSameTimeEnabled) {
-                leftAngle = (leftAngle + 1).coerceIn(-5,5)
-                rightAngle = (rightAngle + 1).coerceIn(-5,5)
+                leftAngle = (leftAngle + 1).coerceIn(-5, 5)
+                rightAngle = (rightAngle + 1).coerceIn(-5, 5)
                 leftAngleTextView.text = leftAngle.toString()
                 rightAngleTextView.text = rightAngle.toString()
-            }else {
-                leftAngle = (leftAngle + 1).coerceIn(-5,5)
+            } else {
+                leftAngle = (leftAngle + 1).coerceIn(-5, 5)
                 leftAngleTextView.text = leftAngle.toString()
             }
         }
 
         leftAngleDecreaseButton.setOnClickListener {
             if (isTwoFeetAtTheSameTimeEnabled) {
-                leftAngle = (leftAngle - 1).coerceIn(-5,5)
-                rightAngle = (rightAngle - 1).coerceIn(-5,5)
+                leftAngle = (leftAngle - 1).coerceIn(-5, 5)
+                rightAngle = (rightAngle - 1).coerceIn(-5, 5)
                 leftAngleTextView.text = leftAngle.toString()
                 rightAngleTextView.text = rightAngle.toString()
-            }else {
-                leftAngle = (leftAngle - 1).coerceIn(-5,5)
+            } else {
+                leftAngle = (leftAngle - 1).coerceIn(-5, 5)
                 leftAngleTextView.text = leftAngle.toString()
             }
         }
-
-        // 오른발 높이 조절 버튼
-
 
         rightHeightIncreaseButton.setOnClickListener {
             if (isTwoFeetAtTheSameTimeEnabled) {
@@ -109,8 +106,8 @@ class AppControlActivity : AppCompatActivity() {
                 rightHeight = (rightHeight + 1).coerceIn(0, 5)
                 leftHeightTextView.text = leftHeight.toString()
                 rightHeightTextView.text = rightHeight.toString()
-            }else {
-                rightHeight = (rightHeight + 1).coerceIn(0,5)
+            } else {
+                rightHeight = (rightHeight + 1).coerceIn(0, 5)
                 rightHeightTextView.text = rightHeight.toString()
             }
         }
@@ -121,40 +118,37 @@ class AppControlActivity : AppCompatActivity() {
                 rightHeight = (rightHeight - 1).coerceIn(0, 5)
                 leftHeightTextView.text = leftHeight.toString()
                 rightHeightTextView.text = rightHeight.toString()
-            }else {
+            } else {
                 rightHeight = (rightHeight - 1).coerceIn(0, 5)
                 rightHeightTextView.text = rightHeight.toString()
             }
         }
 
-
-
         rightAngleIncreaseButton.setOnClickListener {
             if (isTwoFeetAtTheSameTimeEnabled) {
-                leftAngle = (leftAngle + 1).coerceIn(-5,5)
-                rightAngle = (rightAngle + 1).coerceIn(-5,5)
+                leftAngle = (leftAngle + 1).coerceIn(-5, 5)
+                rightAngle = (rightAngle + 1).coerceIn(-5, 5)
                 leftAngleTextView.text = leftAngle.toString()
                 rightAngleTextView.text = rightAngle.toString()
-            }else {
-                rightAngle = (rightAngle + 1).coerceIn(-5,5)
+            } else {
+                rightAngle = (rightAngle + 1).coerceIn(-5, 5)
                 rightAngleTextView.text = rightAngle.toString()
             }
         }
 
         rightAngleDecreaseButton.setOnClickListener {
             if (isTwoFeetAtTheSameTimeEnabled) {
-                leftAngle = (leftAngle - 1).coerceIn(-5,5)
-                rightAngle = (rightAngle - 1).coerceIn(-5,5)
+                leftAngle = (leftAngle - 1).coerceIn(-5, 5)
+                rightAngle = (rightAngle - 1).coerceIn(-5, 5)
                 leftAngleTextView.text = leftAngle.toString()
                 rightAngleTextView.text = rightAngle.toString()
-            }else {
-                rightAngle = (rightAngle - 1).coerceIn(-5,5)
+            } else {
+                rightAngle = (rightAngle - 1).coerceIn(-5, 5)
                 rightAngleTextView.text = rightAngle.toString()
             }
         }
 
         val twoFeetAtTheSameTimeButton: Button = findViewById(R.id.twoFeetAtTheSameTimeButton)
-
         twoFeetAtTheSameTimeButton.setOnClickListener {
             isTwoFeetAtTheSameTimeEnabled = !isTwoFeetAtTheSameTimeEnabled
             if (isTwoFeetAtTheSameTimeEnabled) {
@@ -164,10 +158,15 @@ class AppControlActivity : AppCompatActivity() {
             }
         }
 
+              // '이 자세로 발 받침대 조절하기' 버튼 클릭 이벤트
+        val finalAppControlButton: Button = findViewById(R.id.finalAppControlButton)
+        finalAppControlButton.setOnClickListener {
+            sendAppControlValues()
+        }
+
         // '자세 저장하기' 버튼 클릭 이벤트
         val savePoseButton: Button = findViewById(R.id.savePoseButton)
         savePoseButton.setOnClickListener {
-            // 현재의 두 발의 높이와 각도 값을 가져와서 Firestore에 저장
             val poseData = hashMapOf(
                 "leftHeight" to leftHeight,
                 "leftAngle" to leftAngle,
@@ -175,54 +174,75 @@ class AppControlActivity : AppCompatActivity() {
                 "rightAngle" to rightAngle
             )
 
-            // "poses" 컬렉션에 poseData 추가
             db.collection("poses")
                 .add(poseData)
-                .addOnSuccessListener { documentReference ->
+                .addOnSuccessListener {
                     Toast.makeText(this, "자세가 성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener { e ->
+                .addOnFailureListener {
                     Toast.makeText(this, "자세 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
         }
 
-
+        // 이전에 저장된 장치 주소를 가져와서 연결
+        val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
+        if (deviceAddress != null) {
+            val device = bluetoothAdapter.getRemoteDevice(deviceAddress)
+            bluetoothGatt = device.connectGatt(this, false, gattCallback)
+        } else {
+            Toast.makeText(this, "저장된 디바이스 주소가 없습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
+    private fun sendAppControlValues() {
+        if (bluetoothGatt == null || appControlCharacteristic == null) {
+            Toast.makeText(this, "장치에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+        val values = byteArrayOf(
+            leftHeight.toByte(),
+            leftAngle.toByte(),
+            rightHeight.toByte(),
+            rightAngle.toByte()
+        )
+        appControlCharacteristic?.value = values
+        bluetoothGatt?.writeCharacteristic(appControlCharacteristic)
+    }
 
+    private val gattCallback = object : BluetoothGattCallback() {
+        override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
+            super.onConnectionStateChange(gatt, status, newState)
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                runOnUiThread { Toast.makeText(this@AppControlActivity, "연결되었습니다", Toast.LENGTH_SHORT).show() }
+                gatt.discoverServices()
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                runOnUiThread { Toast.makeText(this@AppControlActivity, "연결이 끊어졌습니다", Toast.LENGTH_SHORT).show() }
+            }
+        }
 
+        override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
+            super.onServicesDiscovered(gatt, status)
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                val uartService = gatt.getService(UART_SERVICE_UUID)
+                appControlCharacteristic = uartService?.getCharacteristic(APP_CONTROL_CHARACTERISTIC_UUID)
+            }
+        }
 
+        override fun onCharacteristicWrite(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
+            super.onCharacteristicWrite(gatt, characteristic, status)
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                runOnUiThread { Toast.makeText(this@AppControlActivity, "발 받침대가 조절되었습니다.", Toast.LENGTH_SHORT).show() }
+            } else {
+                runOnUiThread { Toast.makeText(this@AppControlActivity, "발 받침대 조절에 실패했습니다.", Toast.LENGTH_SHORT).show() }
+            }
+        }
+    }
 
-
-
-
-//        setContent {
-//            Practice_1Theme {
-//                // A surface container using the 'background' color from the theme
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-//                    Greeting3("Android")
-//                }
-//            }
-//        }
-//    }
+    override fun onDestroy() {
+        super.onDestroy()
+        bluetoothGatt?.close()
+        bluetoothGatt = null
+    }
 }
 
-//@Composable
-//fun Greeting3(name: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = "Hello $name!",
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview3() {
-//    Practice_1Theme {
-//        Greeting3("Android")
-//    }
-//}

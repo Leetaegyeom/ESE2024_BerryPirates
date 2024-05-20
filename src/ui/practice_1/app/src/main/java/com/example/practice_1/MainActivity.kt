@@ -53,6 +53,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, RecordActivity::class.java)
             startActivity(intent)
         }
+
+        val scan_button: Button = findViewById(R.id.scan_button)
+        scan_button.setOnClickListener {
+            val intent = Intent(this@MainActivity, ScanActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }
