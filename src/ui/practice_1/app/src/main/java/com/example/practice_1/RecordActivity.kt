@@ -1,20 +1,21 @@
-// RecordActivity.kt
 package com.example.practice_1
+
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.practice_1.R
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.firestore.ktx.firestore
 
 class Record(
+    val documentName: String,
     val leftHeight: Int,
     val leftAngle: Int,
     val rightHeight: Int,
     val rightAngle: Int
 )
-
 
 class RecordActivity : AppCompatActivity() {
     val db = Firebase.firestore
@@ -37,14 +38,19 @@ class RecordActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 val records = mutableListOf<Record>()
                 for (document in result) {
-                    // Firestore에서 가져온 데이터를 com.example.practice_1.model.Record 객체로 변환하여 리스트에 추가
+                    val documentName = document.id
                     val leftHeight = document.getLong("leftHeight")?.toInt() ?: 0
                     val leftAngle = document.getLong("leftAngle")?.toInt() ?: 0
                     val rightHeight = document.getLong("rightHeight")?.toInt() ?: 0
                     val rightAngle = document.getLong("rightAngle")?.toInt() ?: 0
 
-
-                    val record = Record(leftHeight, leftAngle, rightHeight, rightAngle)
+                    val record = Record(
+                        documentName = documentName,
+                        leftHeight = leftHeight,
+                        leftAngle = leftAngle,
+                        rightHeight = rightHeight,
+                        rightAngle = rightAngle
+                    )
                     records.add(record)
                 }
                 // 어댑터에 데이터 갱신
@@ -53,5 +59,19 @@ class RecordActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 // 실패 시 처리
             }
+
+        val home_button: Button = findViewById(R.id.home_button)
+        home_button.setOnClickListener {
+            // '홈' 버튼 클릭 시 MainActivity로 이동
+            val intent = Intent(this@RecordActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        val record_button: Button = findViewById(R.id.record_button)
+        record_button.setOnClickListener {
+            // '기록' 버튼 클릭 시 RecordActivity로 이동
+            val intent = Intent(this@RecordActivity, RecordActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

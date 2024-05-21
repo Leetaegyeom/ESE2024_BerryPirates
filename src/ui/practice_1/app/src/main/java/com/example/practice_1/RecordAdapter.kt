@@ -1,4 +1,3 @@
-// RecordAdapter.kt
 package com.example.practice_1
 
 import android.view.LayoutInflater
@@ -6,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.practice_1.R
 
 class RecordAdapter(private var records: List<Record>) : RecyclerView.Adapter<RecordAdapter.RecordViewHolder>() {
 
@@ -30,12 +28,14 @@ class RecordAdapter(private var records: List<Record>) : RecyclerView.Adapter<Re
     }
 
     inner class RecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val documentNameTextView: TextView = itemView.findViewById(R.id.documentNameTextView)
         private val leftHeightTextView: TextView = itemView.findViewById(R.id.leftHeightTextView)
         private val leftAngleTextView: TextView = itemView.findViewById(R.id.leftAngleTextView)
         private val rightHeightTextView: TextView = itemView.findViewById(R.id.rightHeightTextView)
         private val rightAngleTextView: TextView = itemView.findViewById(R.id.rightAngleTextView)
 
         fun bind(record: Record) {
+            documentNameTextView.text = record.documentName
             leftHeightTextView.text = "높이: ${record.leftHeight}    "
             leftAngleTextView.text = "각도: ${record.leftAngle}"
             rightHeightTextView.text = "높이: ${record.rightHeight}    "

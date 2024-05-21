@@ -3,6 +3,7 @@ package com.example.practice_1
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 
 
@@ -26,14 +27,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val foot_control_button: Button = findViewById(R.id.foot_control_button)
+        val foot_control_button: ImageButton = findViewById(R.id.foot_control_button)
         foot_control_button.setOnClickListener {
             // '발로 조절' 버튼 클릭 시 FootControlActivity로 이동
             val intent = Intent(this@MainActivity, FootControlActivity::class.java)
             startActivity(intent)
         }
 
-        val app_control_button: Button = findViewById(R.id.app_control_button)
+        val app_control_button: ImageButton = findViewById(R.id.app_control_button)
         app_control_button.setOnClickListener {
             // '앱으로 조절' 버튼 클릭 시 AppControlActivity로 이동
             val intent = Intent(this@MainActivity, AppControlActivity::class.java)
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val scan_button: Button = findViewById(R.id.scan_button)
+        val scan_button: ImageButton = findViewById(R.id.scan_button)
         scan_button.setOnClickListener {
             val intent = Intent(this@MainActivity, ScanActivity::class.java)
             startActivity(intent)

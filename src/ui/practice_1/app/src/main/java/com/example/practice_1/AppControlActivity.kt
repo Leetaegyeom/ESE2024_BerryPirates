@@ -2,15 +2,19 @@ package com.example.practice_1
 
 import android.bluetooth.*
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.firestore.ktx.firestore
 import java.util.*
+import androidx.appcompat.app.AlertDialog
+
 
 class AppControlActivity : AppCompatActivity() {
     private var leftHeight = 0
@@ -167,22 +171,28 @@ class AppControlActivity : AppCompatActivity() {
         // '자세 저장하기' 버튼 클릭 이벤트
         val savePoseButton: Button = findViewById(R.id.savePoseButton)
         savePoseButton.setOnClickListener {
-            val poseData = hashMapOf(
-                "leftHeight" to leftHeight,
-                "leftAngle" to leftAngle,
-                "rightHeight" to rightHeight,
-                "rightAngle" to rightAngle
-            )
-
-            db.collection("poses")
-                .add(poseData)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "자세가 성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "자세 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                }
+            showSaveDialog()
         }
+
+
+//        val savePoseButton: Button = findViewById(R.id.savePoseButton)
+//        savePoseButton.setOnClickListener {
+//            val poseData = hashMapOf(
+//                "leftHeight" to leftHeight,
+//                "leftAngle" to leftAngle,
+//                "rightHeight" to rightHeight,
+//                "rightAngle" to rightAngle
+//            )
+//
+//            db.collection("poses")
+//                .add(poseData)
+//                .addOnSuccessListener {
+//                    Toast.makeText(this, "자세가 성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
+//                }
+//                .addOnFailureListener {
+//                    Toast.makeText(this, "자세 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
+//                }
+//        }
 
         // 이전에 저장된 장치 주소를 가져와서 연결
         val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
@@ -192,8 +202,59 @@ class AppControlActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "저장된 디바이스 주소가 없습니다.", Toast.LENGTH_SHORT).show()
         }
+
+        val home_button: Button = findViewById(R.id.home_button)
+        home_button.setOnClickListener {
+            // '홈' 버튼 클릭 시 MainActivity로 이동
+            val intent = Intent(this@AppControlActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        val record_button: Button = findViewById(R.id.record_button)
+        record_button.setOnClickListener {
+            // '기록' 버튼 클릭 시 RecordActivity로 이동
+            val intent = Intent(this@AppControlActivity, RecordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
+    private fun showSaveDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("자세 이름 입력")
+
+        val input = EditText(this)
+        builder.setView(input)
+
+        builder.setPositiveButton("저장") { dialog, which ->
+            val poseName = input.text.toString()
+            if (poseName.isNotEmpty()) {
+                savePose(poseName)
+            } else {
+                Toast.makeText(this, "자세 이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        builder.setNegativeButton("취소") { dialog, which -> dialog.cancel() }
+
+        builder.show()
+    }
+
+    private fun savePose(poseName: String) {
+        val poseData = hashMapOf(
+            "leftHeight" to leftHeight,
+            "leftAngle" to leftAngle,
+            "rightHeight" to rightHeight,
+            "rightAngle" to rightAngle
+        )
+
+        db.collection("poses").document(poseName)
+            .set(poseData)
+            .addOnSuccessListener {
+                Toast.makeText(this, "자세가 성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "자세 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+    }
     private fun sendAppControlValues() {
         if (bluetoothGatt == null || appControlCharacteristic == null) {
             Toast.makeText(this, "장치에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
