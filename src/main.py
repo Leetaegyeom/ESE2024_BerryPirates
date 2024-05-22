@@ -15,6 +15,7 @@ class FOOTREEDOM:
 
     def run(self):
         # 통신 관련 코드(power_off, foot_control_on, foot_control_off, fix_angular, fix_height, save_pose 등 신호 할당돼야함)
+        self.bluetooth.get_bluetooth_signals()
 
         if app_control and not(foot_control): # app control mode
             ref_value = [right_height, left_height, right_angle, left_angle]
