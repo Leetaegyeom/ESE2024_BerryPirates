@@ -8,6 +8,8 @@ from example_advertisement import register_ad_cb, register_ad_error_cb
 from example_gatt_server import Service, Characteristic
 from example_gatt_server import register_app_cb, register_app_error_cb
 
+import SignalField
+
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
 LE_ADVERTISING_MANAGER_IFACE = 'org.bluez.LEAdvertisingManager1'
@@ -190,6 +192,10 @@ class Bluetooth:
         mainloop_thread = threading.Thread(target=mainloop.run())
         mainloop_thread.start()
 
+        self.main_signal = SignalField.MainSignalCharacteristic()
+        self.foot_control_signal = SignalField.FootControlCharacteristic()
+        self.angle_height_value = SignalField.AngleHeightValue()
+
     def find_adapter(self, bus):
         DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
         remote_om = dbus.Interface(bus.get_object(self.BLUEZ_SERVICE_NAME, '/'),
@@ -201,8 +207,24 @@ class Bluetooth:
             print('Skip adapter:', o)
         return None
 
-    def get_bluetooth_signals(self):
-        return self.main_signal_characteristic.value, self.foot_control_signal_characteristic.value, self.app_control_characteristic.value, self.record_characteristic.value
+    def get_main_signal(self):
+        self.main_signal.power_off = self.main_signal_characteristic.value[0]
+        self.main_signal.foot_control_on = self.main_signal_characteristic.value[1]
+        self.main_signal.app_control_on = self.main_signal_characteristic.value[2]
+        return self.main_signal
+
+    def get_foot_control_signal(self):
+        self.foot_control_signal.fix_angular = self.foot_control_signal_characteristic.value[0]
+        self.foot_control_signal.fix_height = self.foot_control_signal_characteristic.value[1]
+        self.foot_control_signal.save_pose = self.foot_control_signal_characteristic.value[2]
+        return self.foot_control_signal
+
+    def get_ref_value(self):
+        self.angle_height_value.left_angle = self.app_control_characteristic.value[0]
+        self.angle_height_value.left_height = self.app_control_characteristic.value[1]
+        self.angle_height_value.right_angle = self.app_control_characteristic.value[2]
+        self.angle_height_value.right_height = self.app_control_characteristic.value[3]
+        return self.angle_height_value
 
     def send_save_pose(self, save_pose):
         self.record_characteristic.send_record(save_pose)

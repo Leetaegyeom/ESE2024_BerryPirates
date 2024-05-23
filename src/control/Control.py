@@ -38,15 +38,20 @@ class Control:
         self.left_height_control_flag = True
         self.right_angle_control_flag = True
         self.left_angle_control_flag = True
-
         print("POSITION CONTROL SETTING COMPLETE __Control.py")
+
+    def get_value(self):
+        meas_right_distance = self.ultrasonic_right.get_distance()
+        meas_left_distance = self.ultrasonic_left.get_distance()
+        meas_right_angle, meas_left_angle = self.potentiometer.get_angle()
+        return [meas_left_angle, meas_left_distance, meas_right_angle, meas_right_distance]
 
     # 앱으로 조작, main에서 while 추가적으로 사용할 필요 없음 
     def position_control(self, ref_value):
-        ref_right_distance = ref_value[0] # cm
-        ref_left_distance = ref_value[1] # cm
-        ref_right_angle = ref_value[2] # degree
-        ref_left_angle = ref_value[3] # degree
+        ref_right_distance = ref_value.right_height # cm
+        ref_left_distance = ref_value.left_height # cm
+        ref_right_angle = ref_value.right_angle # degree
+        ref_left_angle = ref_value.left_angle # degree
 
         try:
             while self.total_control_falg:

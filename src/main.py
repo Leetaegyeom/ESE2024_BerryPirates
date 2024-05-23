@@ -14,18 +14,29 @@ class FOOTREEDOM:
         print("BLUETOOTH SETTING COMPLETE __main.py")
 
     def run(self):
-        # 통신 관련 코드(power_off, foot_control_on, foot_control_off, fix_angular, fix_height, save_pose 등 신호 할당돼야함)
-        self.bluetooth.get_bluetooth_signals()
-        
-        if app_control and not(foot_control): # app control mode
-            ref_value = [right_height, left_height, right_angle, left_angle]
+        main_signal = self.bluetooth.get_main_signal()
+
+        if main_signal.app_control_on and not(main_signal.foot_control_on): # app control mode
+            print("APP CONTROL MODE ON !!")
+            ref_value = self.bluetooth.get_ref_value()
+            print("REF VALUE :\nR_HEIGHT : %f, R_ANGLE : %f, L_HEIGHT : %f, L_ANGLE : %f"%(ref_value.right_height, ref_value.right_angle, ref_value.left_height, ref_value.left_angle))
             self.control.position_control(ref_value)
 
-        elif not(app_control) and foot_control: # foot control mode
-            while 발로 조작 모드 종료 신호 :
-                발로 조작 모드 종료 신호 = func1
-                fix_angular, fix_height = func2
-                if 발로 조작 모드 종료 신호:
+        elif not(main_signal.app_control_on) and main_signal.foot_control_on: # foot control mode
+            while True:
+                foot_control_signal = self.bluetooth.get_main_signal()
+                if not(foot_control_signal.foot_control_on):
                     break
-                self.control.foot_control(fix_angular = fix_angular, fix_height = fix_height)
+                self.control.foot_control(fix_angular = foot_control_signal.fix_angular, fix_height = foot_control_signal.fix_height)
+                if foot_control_signal.save_pose:
+                    save_pose = self.control.get_value()
+                    self.bluetooth.send_save_pose(save_pose)
 
+
+    if __name__ == "__main__":
+        footreedom = FOOTREEDOM()
+        try:
+            while True:
+                footreedom.run()
+        except KeyboardInterrupt:
+            pass
