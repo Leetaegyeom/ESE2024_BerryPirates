@@ -28,3 +28,4 @@ class FOOTREEDOM:
                 if 발로 조작 모드 종료 신호:
                     break
                 self.control.foot_control(fix_angular = fix_angular, fix_height = fix_height)
+
