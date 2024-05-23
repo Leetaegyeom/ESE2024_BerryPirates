@@ -11,29 +11,30 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:text="자유분발"
-        android:textColor="#DAA520"
+        android:textColor="#FF000000"
         android:gravity="center"
         android:textSize="50sp"
-        android:fontFamily="@font/gmarket_sans_ttf_bold"/>
+        android:fontFamily="@font/notosanskr_bold"/>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="편안한 자세로\n 발 받침대를 사용하세요"
-        android:textColor="#DAA520"
+        android:textColor="#FF000000"
         android:gravity="center"
         android:layout_weight="1"
         android:textSize="30dp"
-        android:fontFamily="@font/gmarket_sans_ttf_medium"/>
+        android:fontFamily="@font/notosanskr_medium"/>
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
-        android:src="@drawable/berry_pirates" />
+        android:src="@drawable/image_with_yellow_background" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:text="전원 OFF"
                 android:gravity="center"
-                android:textColor="#DAA520"/>
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
         </LinearLayout>
 
         <LinearLayout
@@ -81,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:text="발로 조절"
                 android:gravity="center"
-                android:textColor="#DAA520"/>
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -110,7 +113,8 @@
                 android:layout_height="wrap_content"
                 android:text="앱으로 조절"
                 android:gravity="center"
-                android:textColor="#DAA520"/>
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
         </LinearLayout>
 
         <LinearLayout
@@ -131,34 +135,61 @@
                 android:layout_height="wrap_content"
                 android:text="블루투스 연결"
                 android:gravity="center"
-                android:textColor="#DAA520"/>
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
         </LinearLayout>
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:id="@+id/home_button"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="홈"
-            android:textColor="#FFFFFFFF"
-            android:background="#FF000000"
-            android:padding="16dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/record_button"
+            <ImageButton
+                android:id="@+id/home_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/home_btn"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="홈"
+                android:gravity="center"
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="기록"
-            android:textColor="#FFFFFFFF"
-            android:background="#FF000000"
-            android:padding="16dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/record_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/record_btn"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기록"
+                android:gravity="center"
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

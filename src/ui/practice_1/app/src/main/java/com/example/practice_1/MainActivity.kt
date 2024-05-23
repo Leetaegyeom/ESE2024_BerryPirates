@@ -41,25 +41,27 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val home_button: Button = findViewById(R.id.home_button)
+        val scan_button: ImageButton = findViewById(R.id.scan_button)
+        scan_button.setOnClickListener {
+            val intent = Intent(this@MainActivity, ScanActivity::class.java)
+            startActivity(intent)
+        }
+
+        val home_button: ImageButton = findViewById(R.id.home_button)
         home_button.setOnClickListener {
             // '홈' 버튼 클릭 시 MainActivity로 이동
             val intent = Intent(this@MainActivity, MainActivity::class.java)
             startActivity(intent)
         }
 
-        val record_button: Button = findViewById(R.id.record_button)
+        val record_button: ImageButton = findViewById(R.id.record_button)
         record_button.setOnClickListener {
             // '기록' 버튼 클릭 시 RecordActivity로 이동
             val intent = Intent(this@MainActivity, RecordActivity::class.java)
             startActivity(intent)
         }
 
-        val scan_button: ImageButton = findViewById(R.id.scan_button)
-        scan_button.setOnClickListener {
-            val intent = Intent(this@MainActivity, ScanActivity::class.java)
-            startActivity(intent)
-        }
+
     }
 
 }
