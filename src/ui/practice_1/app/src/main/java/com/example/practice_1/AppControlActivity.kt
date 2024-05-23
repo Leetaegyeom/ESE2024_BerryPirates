@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -152,7 +153,7 @@ class AppControlActivity : AppCompatActivity() {
             }
         }
 
-        val twoFeetAtTheSameTimeButton: Button = findViewById(R.id.twoFeetAtTheSameTimeButton)
+        val twoFeetAtTheSameTimeButton: ImageButton = findViewById(R.id.twoFeetAtTheSameTimeButton)
         twoFeetAtTheSameTimeButton.setOnClickListener {
             isTwoFeetAtTheSameTimeEnabled = !isTwoFeetAtTheSameTimeEnabled
             if (isTwoFeetAtTheSameTimeEnabled) {
@@ -163,13 +164,13 @@ class AppControlActivity : AppCompatActivity() {
         }
 
               // '이 자세로 발 받침대 조절하기' 버튼 클릭 이벤트
-        val finalAppControlButton: Button = findViewById(R.id.finalAppControlButton)
+        val finalAppControlButton: ImageButton = findViewById(R.id.finalAppControlButton)
         finalAppControlButton.setOnClickListener {
             sendAppControlValues()
         }
 
         // '자세 저장하기' 버튼 클릭 이벤트
-        val savePoseButton: Button = findViewById(R.id.savePoseButton)
+        val savePoseButton: ImageButton = findViewById(R.id.savePoseButton)
         savePoseButton.setOnClickListener {
             showSaveDialog()
         }
@@ -203,14 +204,14 @@ class AppControlActivity : AppCompatActivity() {
             Toast.makeText(this, "저장된 디바이스 주소가 없습니다.", Toast.LENGTH_SHORT).show()
         }
 
-        val home_button: Button = findViewById(R.id.home_button)
+        val home_button: ImageButton = findViewById(R.id.home_button)
         home_button.setOnClickListener {
             // '홈' 버튼 클릭 시 MainActivity로 이동
             val intent = Intent(this@AppControlActivity, MainActivity::class.java)
             startActivity(intent)
         }
 
-        val record_button: Button = findViewById(R.id.record_button)
+        val record_button: ImageButton = findViewById(R.id.record_button)
         record_button.setOnClickListener {
             // '기록' 버튼 클릭 시 RecordActivity로 이동
             val intent = Intent(this@AppControlActivity, RecordActivity::class.java)

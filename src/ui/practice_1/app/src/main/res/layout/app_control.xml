@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FF000000"
+    android:background="#FFFFE0"
     android:gravity="center_horizontal">
 
     <!-- 왼발 -->
@@ -13,52 +13,49 @@
         android:orientation="horizontal"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal">
-
-
-
     </LinearLayout>
 
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:columnCount="5"
-        android:layout_marginTop="10dp">
+        android:columnCount="5">
         <TextView
             android:id="@+id/leftFootTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#FF000000"
             android:text="왼발"
             android:layout_row="1"
             android:layout_column="1"
             android:layout_columnSpan="2"
             android:layout_gravity="center"
-
             android:textSize="24sp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/notosanskr_medium"/>
 
         <TextView
             android:id="@+id/rightFootTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#FF000000"
             android:text="오른발"
             android:layout_columnSpan="2"
             android:layout_gravity="center"
-
             android:textSize="24sp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/notosanskr_medium"/>
         <TextView
             android:id="@+id/heightTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#FF000000"
             android:text="높이"
             android:layout_rowSpan="2"
             android:layout_gravity="center"
             android:textSize="24sp"
-            />
+            android:fontFamily="@font/notosanskr_medium"/>
+
         <TextView
             android:id="@+id/leftHeightTextView"
             android:layout_width="wrap_content"
@@ -66,19 +63,21 @@
             android:layout_row="2"
             android:layout_column="1"
             android:layout_columnSpan="2"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#FF000000"
             android:text="0"
             android:layout_gravity="center"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:fontFamily="@font/notosanskr_medium"/>
         <TextView
             android:id="@+id/rightHeightTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#FF000000"
             android:text="0"
             android:layout_gravity="center"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:fontFamily="@font/notosanskr_medium"/>
 
 
 
@@ -108,11 +107,12 @@
             android:id="@+id/angleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#FF000000"
             android:text="각도"
             android:layout_rowSpan="2"
             android:layout_gravity="center"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:fontFamily="@font/notosanskr_medium"/>
         <TextView
             android:id="@+id/leftAngleTextView"
             android:layout_width="wrap_content"
@@ -121,18 +121,20 @@
             android:layout_column="1"
             android:layout_columnSpan="2"
             android:layout_gravity="center"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#FF000000"
             android:text="0"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:fontFamily="@font/notosanskr_medium"/>
         <TextView
             android:id="@+id/rightAngleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnSpan="2"
             android:layout_gravity="center"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#FF000000"
             android:text="0"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:fontFamily="@font/notosanskr_medium"/>
 
 
 
@@ -165,63 +167,130 @@
 
     </GridLayout>
 
-    <Button
-        android:id="@+id/twoFeetAtTheSameTimeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="양발 동시에 조절하기"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="20dp"/>
-    <Button
-        android:id="@+id/finalAppControlButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이 자세로 발 받침대 조절하기"
-        android:layout_marginBottom="20dp"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+        <ImageButton
+            android:id="@+id/twoFeetAtTheSameTimeButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/left_right_control_btn"
+            android:fontFamily="@font/notosanskr_medium"/>
 
-    <Button
-        android:id="@+id/savePoseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="자세 저장하기"
-        android:layout_marginBottom="100dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="양발 동시에 조절하기"
+            android:gravity="center"
+            android:textColor="#FF000000"
+            android:fontFamily="@font/notosanskr_regular"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageButton
+                android:id="@+id/finalAppControlButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/app_control_btn"
+                android:fontFamily="@font/notosanskr_medium"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이 자세로 발 받침대 조절하기"
+                android:gravity="center"
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageButton
+                android:id="@+id/savePoseButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/save_btn"
+                android:fontFamily="@font/notosanskr_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자세 저장하기"
+                android:gravity="center"
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
+        </LinearLayout>
     </LinearLayout>
     <!-- 네비게이션 바 추가 -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:id="@+id/home_button"
-
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="홈"
-            android:textColor="#FFFFFFFF"
-            android:background="#FF000000"
-            android:padding="16dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/record_button"
+            <ImageButton
+                android:id="@+id/home_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/home_btn"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="홈"
+                android:gravity="center"
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="기록"
-            android:textColor="#FFFFFFFF"
-            android:background="#FF000000"
-            android:padding="16dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="1">
 
+            <ImageButton
+                android:id="@+id/record_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/record_btn"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기록"
+                android:gravity="center"
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
