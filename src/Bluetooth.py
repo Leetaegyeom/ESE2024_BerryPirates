@@ -107,13 +107,13 @@ class RecordCharacteristic(Characteristic):
 class UartService(Service):
     def __init__(self, bus, index):
         Service.__init__(self, bus, index, UART_SERVICE_UUID, True)
-        self.signal_characteristic = MainSignalCharacteristic(bus, 0, self)
-        self.foot_control_characteristic = FootControlSignalCharacteristic(bus, 1, self)
+        self.main_signal_characteristic = MainSignalCharacteristic(bus, 0, self)
+        self.foot_control_signal_characteristic = FootControlSignalCharacteristic(bus, 1, self)
         self.app_control_characteristic = AppControlCharacteristic(bus, 2, self)
         self.record_characteristic = RecordCharacteristic(bus, 3, self)
 
-        self.add_characteristic(self.signal_characteristic)
-        self.add_characteristic(self.foot_control_characteristic)
+        self.add_characteristic(self.main_signal_characteristic)
+        self.add_characteristic(self.foot_control_signal_characteristic)
         self.add_characteristic(self.app_control_characteristic)
         self.add_characteristic(self.record_characteristic)
 
@@ -172,8 +172,8 @@ class Bluetooth:
         app = UartApplication(bus)
 
         # 인스턴스 꺼내오기
-        self.signal_characteristic = app.uart_service.signal_characteristic
-        self.foot_control_characteristic = app.uart_service.foot_control_characteristic
+        self.main_signal_characteristic = app.uart_service.main_signal_characteristic
+        self.foot_control_signal_characteristic = app.uart_service.foot_control_signal_characteristic
         self.app_control_characteristic = app.uart_service.app_control_characteristic
         self.record_characteristic = app.uart_service.record_characteristic
 
@@ -202,7 +202,7 @@ class Bluetooth:
         return None
 
     def get_bluetooth_signals(self):
-        return self.signal_characteristic.value, self.foot_control_characteristic.value, self.app_control_characteristic.value, self.record_characteristic.value
+        return self.main_signal_characteristic.value, self.foot_control_signal_characteristic.value, self.app_control_characteristic.value, self.record_characteristic.value
 
     def send_save_pose(self, save_pose):
         self.record_characteristic.send_record(save_pose)
