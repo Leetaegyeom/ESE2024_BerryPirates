@@ -191,6 +191,9 @@ class Bluetooth:
         mainloop_thread = threading.Thread(target=mainloop.run())
         mainloop_thread.start()
 
+        self.signal_characteristic = SignalField.SignalCharacteristic()
+        self.
+
     def find_adapter(self, bus):
         remote_om = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, '/'),
                                 DBUS_OM_IFACE)
@@ -203,6 +206,9 @@ class Bluetooth:
 
     def get_bluetooth_signals(self):
         return self.signal_characteristic.value, self.foot_control_characteristic.value, self.app_control_characteristic.value, self.record_characteristic.value
+
+    def get_signal_characteristic(self):
+
 
     def send_save_pose(self, save_pose):
         self.record_characteristic.send_record(save_pose)
