@@ -8,8 +8,6 @@ from example_advertisement import register_ad_cb, register_ad_error_cb
 from example_gatt_server import Service, Characteristic
 from example_gatt_server import register_app_cb, register_app_error_cb
 
-import SignalField
-
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
 LE_ADVERTISING_MANAGER_IFACE = 'org.bluez.LEAdvertisingManager1'
@@ -20,7 +18,7 @@ UART_SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
 LOCAL_NAME = 'Footreedom'
 mainloop = None
 
-class SignalCharacteristic(Characteristic):
+class MainSignalCharacteristic(Characteristic):
     SIGNAL_CHARACTERISTIC_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e'
 
     def __init__(self, bus, index, service):
@@ -41,7 +39,7 @@ class SignalCharacteristic(Characteristic):
     def get_signals(self):
         return self.value
 
-class FootControlCharacteristic(Characteristic):
+class FootControlSignalCharacteristic(Characteristic):
     FOOT_CONTROL_CHARACTERISTIC_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
 
     def __init__(self, bus, index, service):
@@ -109,13 +107,13 @@ class RecordCharacteristic(Characteristic):
 class UartService(Service):
     def __init__(self, bus, index):
         Service.__init__(self, bus, index, UART_SERVICE_UUID, True)
-        self.signal_characteristic = SignalCharacteristic(bus, 0, self)
-        self.foot_control_characteristic = FootControlCharacteristic(bus, 1, self)
+        self.main_signal_characteristic = MainSignalCharacteristic(bus, 0, self)
+        self.foot_control_signal_characteristic = FootControlSignalCharacteristic(bus, 1, self)
         self.app_control_characteristic = AppControlCharacteristic(bus, 2, self)
         self.record_characteristic = RecordCharacteristic(bus, 3, self)
 
-        self.add_characteristic(self.signal_characteristic)
-        self.add_characteristic(self.foot_control_characteristic)
+        self.add_characteristic(self.main_signal_characteristic)
+        self.add_characteristic(self.foot_control_signal_characteristic)
         self.add_characteristic(self.app_control_characteristic)
         self.add_characteristic(self.record_characteristic)
 
@@ -157,6 +155,7 @@ class UartAdvertisement(Advertisement):
 class Bluetooth:
     def __init__(self):
         global mainloop
+        self.BLUEZ_SERVICE_NAME = 'org.bluez'
         dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
         bus = dbus.SystemBus()
         adapter = self.find_adapter(bus)
@@ -164,17 +163,17 @@ class Bluetooth:
             print('BLE adapter not found')
             return
 
-        ad_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, adapter),
+        ad_manager = dbus.Interface(bus.get_object(self.BLUEZ_SERVICE_NAME, adapter),
                                     LE_ADVERTISING_MANAGER_IFACE)
-        service_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, adapter),
+        service_manager = dbus.Interface(bus.get_object(self.BLUEZ_SERVICE_NAME, adapter),
                                         GATT_MANAGER_IFACE)
 
         adv = UartAdvertisement(bus, 0)
         app = UartApplication(bus)
 
         # 인스턴스 꺼내오기
-        self.signal_characteristic = app.uart_service.signal_characteristic
-        self.foot_control_characteristic = app.uart_service.foot_control_characteristic
+        self.main_signal_characteristic = app.uart_service.main_signal_characteristic
+        self.foot_control_signal_characteristic = app.uart_service.foot_control_signal_characteristic
         self.app_control_characteristic = app.uart_service.app_control_characteristic
         self.record_characteristic = app.uart_service.record_characteristic
 
@@ -191,11 +190,9 @@ class Bluetooth:
         mainloop_thread = threading.Thread(target=mainloop.run())
         mainloop_thread.start()
 
-        self.signal_characteristic = SignalField.SignalCharacteristic()
-        self.
-
     def find_adapter(self, bus):
-        remote_om = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, '/'),
+        DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
+        remote_om = dbus.Interface(bus.get_object(self.BLUEZ_SERVICE_NAME, '/'),
                                 DBUS_OM_IFACE)
         objects = remote_om.GetManagedObjects()
         for o, props in objects.items():
@@ -205,10 +202,7 @@ class Bluetooth:
         return None
 
     def get_bluetooth_signals(self):
-        return self.signal_characteristic.value, self.foot_control_characteristic.value, self.app_control_characteristic.value, self.record_characteristic.value
-
-    def get_signal_characteristic(self):
-
+        return self.main_signal_characteristic.value, self.foot_control_signal_characteristic.value, self.app_control_characteristic.value, self.record_characteristic.value
 
     def send_save_pose(self, save_pose):
         self.record_characteristic.send_record(save_pose)
