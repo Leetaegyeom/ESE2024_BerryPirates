@@ -83,7 +83,7 @@ class RecordActivity : AppCompatActivity() {
     private fun onRecordClick(record: Record) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_record_options, null)
         val selectedDocumentTextView: TextView = dialogView.findViewById(R.id.selectedDocumentTextView)
-        selectedDocumentTextView.text = "${record.documentName}을/를 선택하셨습니다."
+        selectedDocumentTextView.text = "'${record.documentName}' 자세를 선택하셨습니다."
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -109,13 +109,13 @@ class RecordActivity : AppCompatActivity() {
 
     private fun showDeleteConfirmationDialog(record: Record, parentDialog: AlertDialog) {
         val confirmationDialog = AlertDialog.Builder(this)
-            .setMessage("${record.documentName}을/를 삭제하시겠습니까?")
+            .setMessage("'${record.documentName}' 자세를 삭제하시겠습니까?")
             .setPositiveButton("예") { _, _ ->
                 // 삭제 처리
                 db.collection("poses").document(record.documentName)
                     .delete()
                     .addOnSuccessListener {
-                        Toast.makeText(this, "${record.documentName}이/가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "'${record.documentName}' 자세가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
                         // 삭제 후 RecyclerView 갱신
                         adapter.removeRecord(record)
                     }
