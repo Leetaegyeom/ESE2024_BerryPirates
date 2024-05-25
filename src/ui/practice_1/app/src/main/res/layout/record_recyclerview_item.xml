@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:textColor="#FF000000">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -17,7 +18,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_gravity="center"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:textColor="#FF000000"/>
     </LinearLayout>
 
 
@@ -43,7 +45,8 @@
                     android:layout_height="wrap_content"
                     android:text="왼발"
                     android:textSize="18sp"
-                    android:gravity="start"/>
+                    android:gravity="start"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
 
             <LinearLayout
@@ -56,7 +59,8 @@
                     android:layout_height="wrap_content"
                     android:text="높이:"
                     android:textSize="18sp"
-                    android:gravity="start"/>
+                    android:gravity="start"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
 
             <LinearLayout
@@ -67,7 +71,8 @@
                     android:id="@+id/leftHeightTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
 
             <LinearLayout
@@ -79,7 +84,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="각도:"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textColor="#FF000000"/>
 
             </LinearLayout>
 
@@ -91,7 +97,8 @@
                     android:id="@+id/leftAngleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -111,7 +118,8 @@
                     android:layout_height="wrap_content"
                     android:text="오른발"
                     android:textSize="18sp"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
 
             <LinearLayout
@@ -123,7 +131,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="높이:"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
 
             <LinearLayout
@@ -134,7 +143,8 @@
                     android:id="@+id/rightHeightTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="#FF000000"/>
 
             </LinearLayout>
 
@@ -148,7 +158,8 @@
                     android:layout_height="wrap_content"
                     android:text="각도:"
                     android:textSize="18sp"
-                    android:gravity="start"/>
+                    android:gravity="start"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
 
             <LinearLayout
@@ -159,7 +170,8 @@
                     android:id="@+id/rightAngleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

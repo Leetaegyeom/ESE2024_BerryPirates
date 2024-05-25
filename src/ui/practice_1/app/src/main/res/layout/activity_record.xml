@@ -12,7 +12,8 @@
         android:gravity="center"
         android:layout_marginTop="30dp"
         android:textSize="20dp"
-        android:fontFamily="@font/notosanskr_bold"/>
+        android:fontFamily="@font/notosanskr_bold"
+        android:textColor="#FF000000"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recordRecyclerView"

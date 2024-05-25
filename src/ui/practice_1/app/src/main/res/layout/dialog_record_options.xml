@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:padding="8dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:textColor="#FF000000"/>
 
     <Button
         android:id="@+id/adjustPostureButton"
