@@ -5,18 +5,26 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/documentNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/documentNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="2"
         android:orientation="vertical"
         android:padding="16dp">
         <!-- 왼발 정보 -->
@@ -25,27 +33,66 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="15dp">
-
-            <TextView
-                android:id="@+id/leftFootTextView"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="왼발"
-                android:textSize="18sp"
-                android:gravity="start"/>
+                android:layout_weight="3">
+                <TextView
+                    android:id="@+id/leftFootTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="왼발"
+                    android:textSize="18sp"
+                    android:gravity="start"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/leftHeightTextView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="18sp" />
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/leftFootHeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="높이:"
+                    android:textSize="18sp"
+                    android:gravity="start"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/leftAngleTextView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="18sp" />
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/leftHeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/leftFootAngleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="각도:"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/leftAngleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- 오른발 정보 -->
@@ -54,26 +101,66 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/rightFootTextView"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="오른발"
-                android:textSize="18sp"
-                android:gravity="start"/>
+                android:layout_weight="3">
+                <TextView
+                    android:id="@+id/rightFootTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="오른발"
+                    android:textSize="18sp"
+                    android:singleLine="true"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/rightHeightTextView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="18sp" />
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/rightFootHeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="높이:"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/rightAngleTextView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="18sp" />
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/rightHeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+                <TextView
+                    android:id="@+id/rightFootAngleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="각도:"
+                    android:textSize="18sp"
+                    android:gravity="start"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/rightAngleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
