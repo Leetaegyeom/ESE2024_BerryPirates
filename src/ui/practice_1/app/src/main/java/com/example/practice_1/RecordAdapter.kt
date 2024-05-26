@@ -38,6 +38,11 @@ class RecordAdapter(
         }
     }
 
+    fun addRecord(record: Record) {
+        records.add(record)
+        notifyItemInserted(records.size - 1)
+    }
+
     inner class RecordViewHolder(itemView: View, private val onRecordClick: (Record) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val documentNameTextView: TextView = itemView.findViewById(R.id.documentNameTextView)
         private val leftHeightTextView: TextView = itemView.findViewById(R.id.leftHeightTextView)

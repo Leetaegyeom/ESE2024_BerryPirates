@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -100,8 +101,8 @@ class RecordActivity : AppCompatActivity() {
         }
 
         dialogView.findViewById<Button>(R.id.renamePostureButton).setOnClickListener {
-            // 이름 변경하기 클릭 처리
-            dialog.dismiss()
+            // 이름 변경 다이얼로그 표시
+            showRenameDialog(record, dialog)
         }
 
         dialog.show()
@@ -130,5 +131,46 @@ class RecordActivity : AppCompatActivity() {
             .create()
 
         confirmationDialog.show()
+    }
+
+    private fun showRenameDialog(record: Record, parentDialog: AlertDialog) {
+        val renameDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_rename_record, null)
+        val newNameEditText: EditText = renameDialogView.findViewById(R.id.newNameEditText)
+
+        val renameDialog = AlertDialog.Builder(this)
+            .setView(renameDialogView)
+            .setPositiveButton("확인") { _, _ ->
+                val newName = newNameEditText.text.toString()
+                if (newName.isNotBlank()) {
+                    // 이름 변경 처리
+                    val newRecord = Record(newName, record.leftHeight, record.leftAngle, record.rightHeight, record.rightAngle)
+                    db.collection("poses").document(record.documentName)
+                        .delete()
+                        .addOnSuccessListener {
+                            db.collection("poses").document(newName)
+                                .set(newRecord)
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "'${record.documentName}'에서 '${newName}'(으)로 변경되었습니다.", Toast.LENGTH_SHORT).show()
+                                    adapter.removeRecord(record)
+                                    adapter.addRecord(newRecord)
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(this, "이름 변경 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "이름 변경 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    Toast.makeText(this, "새 이름을 입력하세요.", Toast.LENGTH_SHORT).show()
+                }
+                parentDialog.dismiss()
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        renameDialog.show()
     }
 }
