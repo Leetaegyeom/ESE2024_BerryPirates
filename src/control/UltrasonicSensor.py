@@ -27,7 +27,6 @@ class UltrasonicSensor:
         distance = pulse_duration * 34300 / 2
 
         time.sleep(0.1)
-        # print(f"Distance: {distance:.2f} cm") ## for test
 
         return distance
         

@@ -21,33 +21,14 @@ class ActuatorController:
         # Extend the actuator
         GPIO.output(self.IN1_PIN, GPIO.HIGH)
         GPIO.output(self.IN2_PIN, GPIO.LOW)
-        # Assuming actuator will stop extending automatically when reaching the limit
 
     def retract_actuator(self):
         # Retract the actuator
         GPIO.output(self.IN1_PIN, GPIO.LOW)
         GPIO.output(self.IN2_PIN, GPIO.HIGH)
-        # Assuming actuator will stop retracting automatically when reaching the limit
 
     def stop_actuator(self):
-        # Retract the actuator
-        # GPIO.setup(self.ENA_PIN, GPIO.LOW)
         GPIO.output(self.ENA_PIN, GPIO.LOW)
 
     def clean_up(self):
-        # Cleanup GPIO on program exit
         GPIO.cleanup()
-
-# # Example usage
-# if __name__ == "__main__":
-#     actuator = ActuatorController(25, 8, 7, 17, 27, 22)
-#     try:
-#         while True:
-#             actuator.extend_actuator()
-#             time.sleep(20)  # Adjust time as necessary
-#             actuator.retract_actuator()
-#             time.sleep(20)  # Adjust time as necessary
-#     except KeyboardInterrupt:
-#         pass
-#     finally:
-#         actuator.clean_up()

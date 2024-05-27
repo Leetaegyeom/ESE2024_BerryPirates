@@ -21,7 +21,7 @@ class Potentiometer:
 
         return left_value, right_value
 
-    def get_angle(self): ## need to change
+    def get_angle(self):
         left_value, right_value = self.measure_value()
 
         left_angle = int(left_value * self.RATIO)

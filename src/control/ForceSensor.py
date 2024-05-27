@@ -15,7 +15,10 @@ class ForceSensor:
         
         self.right = None
         self.left = None
-    
+
+        self.MIN_VALUE = 1000
+        self.COMPARE_VALUE = 5000
+
     def measure_value(self):
         left_front_value = self.ADS.readADC(self.LEFT_FRONT_PIN)
         left_back_value = self.ADS.readADC(self.LEFT_BACK_PIN)
@@ -27,24 +30,24 @@ class ForceSensor:
     def guess_user_purpose(self):
         left_front_value, left_back_value, right_front_value, rigth_back_value = self.measure_value()
 
-        if abs(left_front_value) < 1000 and abs(left_back_value) < 1000:
-            self.left = "FRONT BACK UP" # 위로 움직임
+        if abs(left_front_value) < self.MIN_VALUE and abs(left_back_value) < self.MIN_VALUE:
+            self.left = "FRONT BACK UP"
         else:
-            if left_front_value - left_back_value > 5000:
-                self.left = "FRONT DOWN" # 앞쪽이 낮아짐
-            elif abs(left_front_value - left_back_value) < 5000:
-                self.left = "FRONT BACK DOWN" # 아래로 움직임
+            if left_front_value - left_back_value > self.COMPARE_VALUE:
+                self.left = "FRONT DOWN" 
+            elif abs(left_front_value - left_back_value) < self.COMPARE_VALUE:
+                self.left = "FRONT BACK DOWN" 
             else:
-                self.left = "BACK DOWN" # 뒤쪽이 낮아짐 
+                self.left = "BACK DOWN" 
         
-        if abs(right_front_value) < 1000 and abs(right_back_value) < 1000:
-            self.right = "FRONT BACK UP" # 위로 움직임
+        if abs(right_front_value) < self.MIN_VALUE and abs(right_back_value) < self.MIN_VALUE:
+            self.right = "FRONT BACK UP" 
         else:
-            if right_front_value - right_back_value > 5000:
-                self.right = "FRONT DOWN" # 앞쪽이 낮아짐
-            elif abs(right_front_value - right_back_value) < 5000:
-                self.right = "FRONT BACK DOWN" # 아래로 움직임
+            if right_front_value - right_back_value > self.COMPARE_VALUE:
+                self.right = "FRONT DOWN"
+            elif abs(right_front_value - right_back_value) < self.COMPARE_VALUE:
+                self.right = "FRONT BACK DOWN"
             else:
-                self.right = "BACK DOWN" # 뒤쪽이 낮아짐 
+                self.right = "BACK DOWN" 
 
         return self.right, self.left
