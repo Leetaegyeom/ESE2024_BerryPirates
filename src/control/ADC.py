@@ -1,4 +1,4 @@
-class ADS_STRUCT:
+class ADC_STRUCT:
     def __init__(self):
         self.Model = None
 
@@ -15,7 +15,7 @@ class ADS_STRUCT:
         self.LEFT_PIN = None
         self.RIGHT_PIN = None
 
-class ADS_SETTING:
+class ADC_SETTING:
     @staticmethod
     def getSensorParams(Model):
 
