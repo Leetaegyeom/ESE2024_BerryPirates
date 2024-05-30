@@ -4,11 +4,13 @@ import android.Manifest
 import android.bluetooth.*
 import android.bluetooth.le.*
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -50,7 +52,7 @@ class ScanActivity : AppCompatActivity() {
 
         bluetoothLeScanner = bluetoothAdapter.bluetoothLeScanner
 
-        deviceListAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList())
+        deviceListAdapter = ArrayAdapter(this, R.layout.simple_list_item_1_black, ArrayList())
         val listView: ListView = findViewById(R.id.device_list_view)
         listView.adapter = deviceListAdapter
 
@@ -60,6 +62,20 @@ class ScanActivity : AppCompatActivity() {
         }
 
         checkPermissionsAndStartScanning()
+
+        val home_button: ImageButton = findViewById(R.id.home_button)
+        home_button.setOnClickListener {
+            // '홈' 버튼 클릭 시 MainActivity로 이동
+            val intent = Intent(this@ScanActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        val record_button: ImageButton = findViewById(R.id.record_button)
+        record_button.setOnClickListener {
+            // '기록' 버튼 클릭 시 RecordActivity로 이동
+            val intent = Intent(this@ScanActivity, RecordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun checkPermissionsAndStartScanning() {
