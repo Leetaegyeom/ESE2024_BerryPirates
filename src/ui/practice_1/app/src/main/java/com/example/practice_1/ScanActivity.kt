@@ -5,7 +5,6 @@ import android.bluetooth.*
 import android.bluetooth.le.*
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -32,10 +31,6 @@ class ScanActivity : AppCompatActivity() {
     private val FOOT_CONTROL_CHARACTERISTIC_UUID = UUID.fromString("6e400003-b5a3-f393-e0a9-e50e24dcca9e")
     private val APP_CONTROL_CHARACTERISTIC_UUID = UUID.fromString("6e400004-b5a3-f393-e0a9-e50e24dcca9e")
     private val RECORD_CHARACTERISTIC_UUID = UUID.fromString("6e400005-b5a3-f393-e0a9-e50e24dcca9e")
-
-    private val sharedPrefs: SharedPreferences by lazy {
-        getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,6 +141,7 @@ class ScanActivity : AppCompatActivity() {
 
     private fun connectToDevice(device: BluetoothDevice) {
         bluetoothGatt = device.connectGatt(this, false, gattCallback)
+        BleManager.bluetoothGatt = bluetoothGatt // BleManager에 저장
         Toast.makeText(this, "${device.name} 연결 중...", Toast.LENGTH_SHORT).show()
     }
 
@@ -154,8 +150,6 @@ class ScanActivity : AppCompatActivity() {
             super.onConnectionStateChange(gatt, status, newState)
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 runOnUiThread { Toast.makeText(this@ScanActivity, "연결되었습니다", Toast.LENGTH_SHORT).show() }
-                // 장치 주소를 SharedPreferences에 저장
-                sharedPrefs.edit().putString("DEVICE_ADDRESS", gatt.device.address).apply()
                 gatt.discoverServices()
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 runOnUiThread { Toast.makeText(this@ScanActivity, "연결이 끊어졌습니다", Toast.LENGTH_SHORT).show() }
@@ -167,8 +161,8 @@ class ScanActivity : AppCompatActivity() {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 val uartService = gatt.getService(UART_SERVICE_UUID)
                 uartService?.let {
-                    val signalCharacteristic = it.getCharacteristic(SIGNAL_CHARACTERISTIC_UUID)
-                    signalCharacteristic?.let { characteristic ->
+                    val mainSignalCharacteristic = it.getCharacteristic(SIGNAL_CHARACTERISTIC_UUID)
+                    mainSignalCharacteristic?.let { characteristic ->
                         gatt.readCharacteristic(characteristic)
                     }
 

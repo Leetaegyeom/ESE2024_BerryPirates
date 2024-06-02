@@ -30,6 +30,7 @@
         android:orientation="vertical"
         android:gravity="center">
         <ImageButton
+            android:id="@+id/height_lock_button"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -53,7 +54,7 @@
         android:gravity="center">
 
         <ImageButton
-            android:id="@+id/foot_control_button"
+            android:id="@+id/angle_lock_button"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -75,7 +76,7 @@
         android:orientation="vertical"
         android:gravity="center">
         <ImageButton
-            android:id="@+id/savePoseButton"
+            android:id="@+id/save_pose_button"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"

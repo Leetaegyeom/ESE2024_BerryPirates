@@ -176,24 +176,6 @@ class AppControlActivity : AppCompatActivity() {
         }
 
 
-//        val savePoseButton: Button = findViewById(R.id.savePoseButton)
-//        savePoseButton.setOnClickListener {
-//            val poseData = hashMapOf(
-//                "leftHeight" to leftHeight,
-//                "leftAngle" to leftAngle,
-//                "rightHeight" to rightHeight,
-//                "rightAngle" to rightAngle
-//            )
-//
-//            db.collection("poses")
-//                .add(poseData)
-//                .addOnSuccessListener {
-//                    Toast.makeText(this, "자세가 성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
-//                }
-//                .addOnFailureListener {
-//                    Toast.makeText(this, "자세 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
-//                }
-//        }
 
         // 이전에 저장된 장치 주소를 가져와서 연결
         val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
