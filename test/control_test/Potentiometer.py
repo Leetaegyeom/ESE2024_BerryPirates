@@ -5,7 +5,7 @@ class Potentiometer:
     def __init__(self, potentiometer_params):
         self.I2C_BUS_ID = potentiometer_params.I2C_BUS_ID
 
-        self.LEFT_PIN = potentiometer_params.LEFT_PIN
+        # self.LEFT_PIN = potentiometer_params.LEFT_PIN
         self.RIGHT_PIN = potentiometer_params.RIGHT_PIN
 
         self.ADS = ADS1x15.ADS1115(self.I2C_BUS_ID, 0x48)
@@ -16,9 +16,9 @@ class Potentiometer:
         self.RATIO = self.MAX_ANGLE/self.MAX_VALUE
     
     def measure_value(self):
-        left_value = self.ADS.readADC(self.LEFT_PIN)
+        # left_value = self.ADS.readADC(self.LEFT_PIN)
         right_value = self.ADS.readADC(self.RIGHT_PIN)
-
+        left_value = 0
         return left_value, right_value
 
     def get_angle(self):
