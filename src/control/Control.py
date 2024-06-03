@@ -17,8 +17,8 @@ class Control:
         self.ultrasonic_left_params = GPIO.GPIO_SETTING.getSensorParams('ultrasonic_left')
         print("GPIO SETTING COMPLETE __Control.py")
 
-        self.force_params = ADC.ADS_SETTING.getSensorParams('force')
-        self.potentiometer_params = ADC.ADS_SETTING.getSensorParams('potentiometer')
+        self.force_params = ADC.ADC_SETTING.getSensorParams('force')
+        self.potentiometer_params = ADC.ADC_SETTING.getSensorParams('potentiometer')
         print("ADS SETTING COMPLETE __Control.py")
 
         self.ultrasonic_right = UltrasonicSensor(self.ultrasonic_right_params)

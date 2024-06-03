@@ -32,7 +32,6 @@ class FOOTREEDOM:
                     save_pose = self.control.get_value()
                     self.bluetooth.send_save_pose(save_pose)
 
-
 if __name__ == "__main__":
     footreedom = FOOTREEDOM()
     try:

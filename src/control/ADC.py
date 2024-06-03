@@ -19,7 +19,7 @@ class ADC_SETTING:
     @staticmethod
     def getSensorParams(Model):
 
-        model_params = GPIO_STRUCT()
+        model_params = ADC_STRUCT()
 
         ### FORCE SENSOR ###
         if Model == 'force':
