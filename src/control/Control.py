@@ -1,5 +1,5 @@
 import GPIO
-import ADS
+import ADC
 from Actuator import ActuatorController
 from UltrasonicSensor import UltrasonicSensor
 from ForceSensor import ForceSensor
@@ -17,8 +17,8 @@ class Control:
         self.ultrasonic_left_params = GPIO.GPIO_SETTING.getSensorParams('ultrasonic_left')
         print("GPIO SETTING COMPLETE __Control.py")
 
-        self.force_params = ADS.ADS_SETTING.getSensorParams('force')
-        self.potentiometer_params = ADS.ADS_SETTING.getSensorParams('potentiometer')
+        self.force_params = ADC.ADS_SETTING.getSensorParams('force')
+        self.potentiometer_params = ADC.ADS_SETTING.getSensorParams('potentiometer')
         print("ADS SETTING COMPLETE __Control.py")
 
         self.ultrasonic_right = UltrasonicSensor(self.ultrasonic_right_params)
@@ -55,7 +55,7 @@ class Control:
 
         try:
             while self.total_control_falg:
-                if self.right_height_control_flag
+                if self.right_height_control_flag:
                     meas_right_distance = self.ultrasonic_right.get_distance() # cm
                     right_distance_err = ref_right_distance - meas_right_distance
                     print("right_distance_err : %f" %right_distance_err, " __Control.py")
@@ -69,7 +69,7 @@ class Control:
                         elif right_distance_err < 0:
                             self.actuator_right_height.retract_actuator()
 
-                if self.left_height_control_flag
+                if self.left_height_control_flag:
                     meas_left_distance = self.ultrasonic_left.get_distance() # cm
                     left_distance_err = ref_left_distance - meas_left_distance
                     print("left_distance_err : %f" %left_distance_err, " __Control.py")
@@ -88,9 +88,9 @@ class Control:
                 ########################################################################################
                 #### 각도 증가&감소에 따라 액추에이터가 늘어나야 하는지 줄어들어야 하는지는 하드웨어 구성 후에 수정하기 ####
                 ########################################################################################
-                if self.right_angle_control_flag
+                if self.right_angle_control_flag:
                     right_angle_err = ref_right_angle - meas_right_angle # degree
-                    print("right_angle_err : %f" %rignt_angle_err, " __Control.py")
+                    print("right_angle_err : %f" %right_angle_err, " __Control.py")
 
                     if abs(right_angle_err) < self.angle_threshold:
                         self.actuator_right_angle.stop_actuator()
@@ -101,7 +101,7 @@ class Control:
                         elif right_angle_err < 0:
                             self.actuator_right_angle.retract_actuator()
 
-                if self.left_angle_control_flag
+                if self.left_angle_control_flag:
                     left_angle_err = ref_left_angle - meas_left_angle # degree
                     print("left_angle_err : %f" %left_angle_err, " __Control.py")
 
@@ -114,7 +114,7 @@ class Control:
                         elif left_angle_err < 0:
                             self.actuator_left_angle.retract_actuator()
             
-                if not (self.right_height_control_flag) and not (self.left_height_control_flag) and not(self.right_angle_control_flag) and not(self.left_angle_control_flag)
+                if not (self.right_height_control_flag) and not (self.left_height_control_flag) and not(self.right_angle_control_flag) and not(self.left_angle_control_flag):
                     self.total_control_falg = False
                     self.stop_all_actuator()
                     # self.cleanup_all_actuator()

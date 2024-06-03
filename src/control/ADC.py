@@ -22,7 +22,7 @@ class ADC_SETTING:
         model_params = GPIO_STRUCT()
 
         ### FORCE SENSOR ###
-        elif Model == 'force':
+        if Model == 'force':
 
             model_params.Model = 'force'
 
