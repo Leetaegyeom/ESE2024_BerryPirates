@@ -26,16 +26,30 @@ class FootControlActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.foot_control)
 
-        val home_button: ImageButton = findViewById(R.id.home_button)
-        home_button.setOnClickListener {
-            // '홈' 버튼 클릭 시 MainActivity로 이동
+        initializeUIElements()
+
+        // 이전에 저장된 장치 주소를 가져와서 연결 시도
+        val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
+        if (deviceAddress != null) {
+            val bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+            val device = bluetoothAdapter.getRemoteDevice(deviceAddress)
+            bluetoothGatt = device.connectGatt(this, false, gattCallback)
+        } else {
+            // 저장된 디바이스 주소가 없으면 ScanActivity로 이동
+            val intent = Intent(this@FootControlActivity, ScanActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun initializeUIElements() {
+        val homeButton: ImageButton = findViewById(R.id.home_button)
+        homeButton.setOnClickListener {
             val intent = Intent(this@FootControlActivity, MainActivity::class.java)
             startActivity(intent)
         }
 
-        val record_button: ImageButton = findViewById(R.id.record_button)
-        record_button.setOnClickListener {
-            // '기록' 버튼 클릭 시 RecordActivity로 이동
+        val recordButton: ImageButton = findViewById(R.id.record_button)
+        recordButton.setOnClickListener {
             val intent = Intent(this@FootControlActivity, RecordActivity::class.java)
             startActivity(intent)
         }
@@ -54,16 +68,6 @@ class FootControlActivity : AppCompatActivity() {
         savePoseButton.setOnClickListener {
             updateFootControlCharacteristic(2, true)
         }
-
-        // 이전에 저장된 장치 주소를 가져와서 연결
-        val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
-        if (deviceAddress != null) {
-            val bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
-            val device = bluetoothAdapter.getRemoteDevice(deviceAddress)
-            bluetoothGatt = device.connectGatt(this, false, gattCallback)
-        } else {
-            Toast.makeText(this, "저장된 디바이스 주소가 없습니다.", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun updateFootControlCharacteristic(index: Int, value: Boolean) {
@@ -72,7 +76,6 @@ class FootControlActivity : AppCompatActivity() {
             return
         }
 
-        // 특성 값이 초기화되지 않았을 경우 초기화
         if (footControlCharacteristic!!.value == null) {
             footControlCharacteristic!!.value = ByteArray(3) // 적절한 크기의 배열로 초기화
         }
