@@ -3,14 +3,17 @@ import sys
 sys.path.append('./control')
 
 from Control import Control
-from Bluetooth import Bluetooth
+# from Bluetooth import Bluetooth
+
+
 
 class SIGNAL:
     def __init__(self):
         self.right_height = 10 # cm
-        self.ref_left_distance = 0 # cm
-        self.right_angle = 10 # degree
-        self.ref_left_angle = 0 # degree
+        self.left_height = 10 # cm
+        self.right_angle = 0 # degree
+        self.left_angle = 0 # degree
+        
 
 class FOOTREEDOM:
     def __init__(self):
@@ -29,9 +32,11 @@ class FOOTREEDOM:
         # print("APP CONTROL MODE ON !!")
         # ref_value = self.bluetooth.get_ref_value()
         ref_value = self.ref_value
-        print("REF VALUE :\nR_HEIGHT : %f, R_ANGLE : %f, L_HEIGHT : %f, L_ANGLE : %f"%(ref_value.right_height, ref_value.right_angle, ref_value.left_height, ref_value.left_angle))
-        self.control.position_control(ref_value)
+        # print("REF VALUE :\nR_HEIGHT : %f, R_ANGLE : %f, L_HEIGHT : %f, L_ANGLE : %f"%(ref_value.right_height, ref_value.right_angle, ref_value.left_height, ref_value.left_angle))
+        # print("!!!!!!!!!!!!!11")
 
+        self.control.position_control(ref_value)
+        
         # 6/5 발로 조절 모드에서 버튼 누를 때마다 T -> F -> T로 바뀌게
         # 6/5 발로 조절 모드 나가면 각도 높이 고정 시그널 False로 
         # elif not(main_signal.app_control_on) and main_signal.foot_control_on: # foot control mode

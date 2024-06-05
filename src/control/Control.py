@@ -55,6 +55,7 @@ class Control:
 
         try:
             while self.total_control_falg:
+                # time.sleep(1)
                 if self.right_height_control_flag:
                     meas_right_distance = self.ultrasonic_right.get_distance() # cm
                     right_distance_err = ref_right_distance - meas_right_distance
@@ -65,8 +66,10 @@ class Control:
                         self.right_height_control_flag = False
                     else:
                         if right_distance_err > 0:
+                            print("height retract right!!!!!")
                             self.actuator_right_height.retract_actuator()
                         elif right_distance_err < 0:
+                            print("height extend right!!!!!")
                             self.actuator_right_height.extend_actuator()
 
                 if self.left_height_control_flag:
@@ -79,8 +82,10 @@ class Control:
                         self.left_height_control_flag = False
                     else:
                         if left_distance_err > 0:
+                            print("height retract left!!!!!")
                             self.actuator_left_height.retract_actuator()
                         elif left_distance_err < 0:
+                            print("height retract left!!!!!")
                             self.actuator_left_height.extend_actuator()
 
                 meas_right_angle, meas_left_angle = self.potentiometer.get_angle()
@@ -94,8 +99,10 @@ class Control:
                         self.right_angle_control_flag = False
                     else:
                         if right_angle_err > 0:
+                            print("angle retract right!!!!!")
                             self.actuator_right_angle.retract_actuator()
                         elif right_angle_err < 0:
+                            print("angle extend right!!!!!")
                             self.actuator_right_angle.extend_actuator()
 
 
@@ -108,8 +115,10 @@ class Control:
                         self.left_angle_control_flag = False
                     else:
                         if left_angle_err > 0:
+                            print("angle retract left!!!!!")
                             self.actuator_left_angle.retract_actuator()
                         elif left_angle_err < 0:
+                            print("angle extend left!!!!!")
                             self.actuator_left_angle.extend_actuator()
             
                 if not (self.right_height_control_flag) and not (self.left_height_control_flag) and not(self.right_angle_control_flag) and not(self.left_angle_control_flag):
@@ -155,9 +164,9 @@ class Control:
         self.actuator_left_angle.stop_actuator()
         print("STOP ALL ACTUATOR COMPLETE __Control.py")
 
-    # def cleanup_all_actuator(self):
-    #     self.actuator_right_height.clean_up()
-    #     self.actuator_left_height.clean_up()
-    #     self.actuator_right_angle.clean_up()
-    #     self.actuator_left_angle.clean_up()
-    #     print("CLEAN UP ALL ACTUATOR COMPLETE __Control.py")
+    def cleanup_all_actuator(self):
+        self.actuator_right_height.clean_up()
+        self.actuator_left_height.clean_up()
+        self.actuator_right_angle.clean_up()
+        self.actuator_left_angle.clean_up()
+        print("CLEAN UP ALL ACTUATOR COMPLETE __Control.py")

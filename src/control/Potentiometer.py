@@ -11,12 +11,12 @@ class Potentiometer:
         self.ADS = ADS1x15.ADS1115(self.I2C_BUS_ID, 0x48)
         self.ADS.setGain(self.ADS.PGA_4_096V)
 
-        self.MAX_ANGLE = 40
+        self.MAX_ANGLE = 300
         self.MAX_VALUE = 26366
         self.RATIO = self.MAX_ANGLE/self.MAX_VALUE
 
-        self.RIGHT_OFFSET = 1000
-        self.LEFT_OFFSET = 1000
+        self.RIGHT_OFFSET = 14320
+        self.LEFT_OFFSET = 19300
 
     def measure_value(self):
         left_value = self.ADS.readADC(self.LEFT_PIN) - self.LEFT_OFFSET

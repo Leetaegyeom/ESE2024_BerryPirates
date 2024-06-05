@@ -62,8 +62,8 @@ class GPIO_SETTING:
             model_params.Model = 'actuator_left_angle'
 
             model_params.ENA_PIN = 13
-            model_params.IN1_PIN = 5
-            model_params.IN2_PIN = 6
+            model_params.IN1_PIN = 10
+            model_params.IN2_PIN = 9
 
         else:
             raise ValueError('Model invalid')
