@@ -9,7 +9,7 @@ class ActuatorController:
         self.IN2_PIN = actuator_params.IN2_PIN
 
         # Setup
-        GPIO.setmode(GPIO.BCM)
+        # GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.ENA_PIN, GPIO.OUT)
         GPIO.setup(self.IN1_PIN, GPIO.OUT)
         GPIO.setup(self.IN2_PIN, GPIO.OUT)
