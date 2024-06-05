@@ -67,15 +67,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 이전에 저장된 장치 주소를 가져와서 연결
+        // 이전에 저장된 장치 주소를 가져와서 연결 시도
         val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
         if (deviceAddress != null) {
             val device = bluetoothAdapter.getRemoteDevice(deviceAddress)
             bluetoothGatt = device.connectGatt(this, false, gattCallback)
         } else {
-            Toast.makeText(this, "저장된 디바이스 주소가 없습니다.", Toast.LENGTH_SHORT).show()
+            // 저장된 디바이스 주소가 없으면 ScanActivity로 이동
+            val intent = Intent(this@MainActivity, ScanActivity::class.java)
+            startActivity(intent)
         }
     }
+
 
     private fun updateMainSignalCharacteristic(index: Int, value: Boolean) {
         if (bluetoothGatt == null || mainSignalCharacteristic == null) {

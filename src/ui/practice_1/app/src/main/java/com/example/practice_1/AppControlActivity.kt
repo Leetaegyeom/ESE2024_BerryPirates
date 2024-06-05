@@ -16,7 +16,6 @@ import com.google.firebase.firestore.ktx.firestore
 import java.util.*
 import androidx.appcompat.app.AlertDialog
 
-
 class AppControlActivity : AppCompatActivity() {
     private var leftHeight = 0
     private var leftAngle = 0
@@ -43,6 +42,25 @@ class AppControlActivity : AppCompatActivity() {
 
         bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
 
+        // UI 요소 초기화
+        initializeUIElements()
+
+        // 이전에 저장된 장치 주소를 가져와서 연결 시도
+        val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
+        if (deviceAddress != null) {
+            val device = bluetoothAdapter.getRemoteDevice(deviceAddress)
+            bluetoothGatt = device.connectGatt(this, false, gattCallback)
+        } else {
+            // 저장된 디바이스 주소가 없으면 ScanActivity로 이동
+            val intent = Intent(this@AppControlActivity, ScanActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 버튼 클릭 이벤트 초기화
+        initializeButtonClickEvents()
+    }
+
+    private fun initializeUIElements() {
         // 왼발 높이 조절 버튼
         val leftHeightIncreaseButton: Button = findViewById(R.id.leftHeightIncreaseButton)
         val leftHeightDecreaseButton: Button = findViewById(R.id.leftHeightDecreaseButton)
@@ -57,102 +75,14 @@ class AppControlActivity : AppCompatActivity() {
         val rightAngleDecreaseButton: Button = findViewById(R.id.rightAngleDecreaseButton)
         val rightAngleTextView: TextView = findViewById(R.id.rightAngleTextView)
 
-        leftHeightIncreaseButton.setOnClickListener {
-            if (isTwoFeetAtTheSameTimeEnabled) {
-                leftHeight = (leftHeight + 1).coerceIn(0, 5)
-                rightHeight = (rightHeight + 1).coerceIn(0, 5)
-                leftHeightTextView.text = leftHeight.toString()
-                rightHeightTextView.text = rightHeight.toString()
-            } else {
-                leftHeight = (leftHeight + 1).coerceIn(0, 5)
-                leftHeightTextView.text = leftHeight.toString()
-            }
-        }
+        // 버튼 클릭 리스너 설정
+        setButtonListeners(leftHeightIncreaseButton, leftHeightDecreaseButton, leftHeightTextView, ::increaseLeftHeight, ::decreaseLeftHeight)
+        setButtonListeners(leftAngleIncreaseButton, leftAngleDecreaseButton, leftAngleTextView, ::increaseLeftAngle, ::decreaseLeftAngle)
+        setButtonListeners(rightHeightIncreaseButton, rightHeightDecreaseButton, rightHeightTextView, ::increaseRightHeight, ::decreaseRightHeight)
+        setButtonListeners(rightAngleIncreaseButton, rightAngleDecreaseButton, rightAngleTextView, ::increaseRightAngle, ::decreaseRightAngle)
+    }
 
-        leftHeightDecreaseButton.setOnClickListener {
-            if (isTwoFeetAtTheSameTimeEnabled) {
-                leftHeight = (leftHeight - 1).coerceIn(0, 5)
-                rightHeight = (rightHeight - 1).coerceIn(0, 5)
-                leftHeightTextView.text = leftHeight.toString()
-                rightHeightTextView.text = rightHeight.toString()
-            } else {
-                leftHeight = (leftHeight - 1).coerceIn(0, 5)
-                leftHeightTextView.text = leftHeight.toString()
-            }
-        }
-
-        leftAngleIncreaseButton.setOnClickListener {
-            if (isTwoFeetAtTheSameTimeEnabled) {
-                leftAngle = (leftAngle + 1).coerceIn(-5, 5)
-                rightAngle = (rightAngle + 1).coerceIn(-5, 5)
-                leftAngleTextView.text = leftAngle.toString()
-                rightAngleTextView.text = rightAngle.toString()
-            } else {
-                leftAngle = (leftAngle + 1).coerceIn(-5, 5)
-                leftAngleTextView.text = leftAngle.toString()
-            }
-        }
-
-        leftAngleDecreaseButton.setOnClickListener {
-            if (isTwoFeetAtTheSameTimeEnabled) {
-                leftAngle = (leftAngle - 1).coerceIn(-5, 5)
-                rightAngle = (rightAngle - 1).coerceIn(-5, 5)
-                leftAngleTextView.text = leftAngle.toString()
-                rightAngleTextView.text = rightAngle.toString()
-            } else {
-                leftAngle = (leftAngle - 1).coerceIn(-5, 5)
-                leftAngleTextView.text = leftAngle.toString()
-            }
-        }
-
-        rightHeightIncreaseButton.setOnClickListener {
-            if (isTwoFeetAtTheSameTimeEnabled) {
-                leftHeight = (leftHeight + 1).coerceIn(0, 5)
-                rightHeight = (rightHeight + 1).coerceIn(0, 5)
-                leftHeightTextView.text = leftHeight.toString()
-                rightHeightTextView.text = rightHeight.toString()
-            } else {
-                rightHeight = (rightHeight + 1).coerceIn(0, 5)
-                rightHeightTextView.text = rightHeight.toString()
-            }
-        }
-
-        rightHeightDecreaseButton.setOnClickListener {
-            if (isTwoFeetAtTheSameTimeEnabled) {
-                leftHeight = (leftHeight - 1).coerceIn(0, 5)
-                rightHeight = (rightHeight - 1).coerceIn(0, 5)
-                leftHeightTextView.text = leftHeight.toString()
-                rightHeightTextView.text = rightHeight.toString()
-            } else {
-                rightHeight = (rightHeight - 1).coerceIn(0, 5)
-                rightHeightTextView.text = rightHeight.toString()
-            }
-        }
-
-        rightAngleIncreaseButton.setOnClickListener {
-            if (isTwoFeetAtTheSameTimeEnabled) {
-                leftAngle = (leftAngle + 1).coerceIn(-5, 5)
-                rightAngle = (rightAngle + 1).coerceIn(-5, 5)
-                leftAngleTextView.text = leftAngle.toString()
-                rightAngleTextView.text = rightAngle.toString()
-            } else {
-                rightAngle = (rightAngle + 1).coerceIn(-5, 5)
-                rightAngleTextView.text = rightAngle.toString()
-            }
-        }
-
-        rightAngleDecreaseButton.setOnClickListener {
-            if (isTwoFeetAtTheSameTimeEnabled) {
-                leftAngle = (leftAngle - 1).coerceIn(-5, 5)
-                rightAngle = (rightAngle - 1).coerceIn(-5, 5)
-                leftAngleTextView.text = leftAngle.toString()
-                rightAngleTextView.text = rightAngle.toString()
-            } else {
-                rightAngle = (rightAngle - 1).coerceIn(-5, 5)
-                rightAngleTextView.text = rightAngle.toString()
-            }
-        }
-
+    private fun initializeButtonClickEvents() {
         val twoFeetAtTheSameTimeButton: ImageButton = findViewById(R.id.twoFeetAtTheSameTimeButton)
         twoFeetAtTheSameTimeButton.setOnClickListener {
             isTwoFeetAtTheSameTimeEnabled = !isTwoFeetAtTheSameTimeEnabled
@@ -163,7 +93,7 @@ class AppControlActivity : AppCompatActivity() {
             }
         }
 
-              // '이 자세로 발 받침대 조절하기' 버튼 클릭 이벤트
+        // '이 자세로 발 받침대 조절하기' 버튼 클릭 이벤트
         val finalAppControlButton: ImageButton = findViewById(R.id.finalAppControlButton)
         finalAppControlButton.setOnClickListener {
             sendAppControlValues()
@@ -173,17 +103,6 @@ class AppControlActivity : AppCompatActivity() {
         val savePoseButton: ImageButton = findViewById(R.id.savePoseButton)
         savePoseButton.setOnClickListener {
             showSaveDialog()
-        }
-
-
-
-        // 이전에 저장된 장치 주소를 가져와서 연결
-        val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
-        if (deviceAddress != null) {
-            val device = bluetoothAdapter.getRemoteDevice(deviceAddress)
-            bluetoothGatt = device.connectGatt(this, false, gattCallback)
-        } else {
-            Toast.makeText(this, "저장된 디바이스 주소가 없습니다.", Toast.LENGTH_SHORT).show()
         }
 
         val home_button: ImageButton = findViewById(R.id.home_button)
@@ -198,6 +117,109 @@ class AppControlActivity : AppCompatActivity() {
             // '기록' 버튼 클릭 시 RecordActivity로 이동
             val intent = Intent(this@AppControlActivity, RecordActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun setButtonListeners(
+        increaseButton: Button,
+        decreaseButton: Button,
+        textView: TextView,
+        increaseAction: () -> Int,
+        decreaseAction: () -> Int
+    ) {
+        increaseButton.setOnClickListener {
+            textView.text = increaseAction().toString()
+        }
+        decreaseButton.setOnClickListener {
+            textView.text = decreaseAction().toString()
+        }
+    }
+
+    private fun increaseLeftHeight(): Int {
+        return if (isTwoFeetAtTheSameTimeEnabled) {
+            leftHeight = (leftHeight + 1).coerceIn(0, 5)
+            rightHeight = (rightHeight + 1).coerceIn(0, 5)
+            leftHeight
+        } else {
+            leftHeight = (leftHeight + 1).coerceIn(0, 5)
+            leftHeight
+        }
+    }
+
+    private fun decreaseLeftHeight(): Int {
+        return if (isTwoFeetAtTheSameTimeEnabled) {
+            leftHeight = (leftHeight - 1).coerceIn(0, 5)
+            rightHeight = (rightHeight - 1).coerceIn(0, 5)
+            leftHeight
+        } else {
+            leftHeight = (leftHeight - 1).coerceIn(0, 5)
+            leftHeight
+        }
+    }
+
+    private fun increaseLeftAngle(): Int {
+        return if (isTwoFeetAtTheSameTimeEnabled) {
+            leftAngle = (leftAngle + 1).coerceIn(-5, 5)
+            rightAngle = (rightAngle + 1).coerceIn(-5, 5)
+            leftAngle
+        } else {
+            leftAngle = (leftAngle + 1).coerceIn(-5, 5)
+            leftAngle
+        }
+    }
+
+    private fun decreaseLeftAngle(): Int {
+        return if (isTwoFeetAtTheSameTimeEnabled) {
+            leftAngle = (leftAngle - 1).coerceIn(-5, 5)
+            rightAngle = (rightAngle - 1).coerceIn(-5, 5)
+            leftAngle
+        } else {
+            leftAngle = (leftAngle - 1).coerceIn(-5, 5)
+            leftAngle
+        }
+    }
+
+    private fun increaseRightHeight(): Int {
+        return if (isTwoFeetAtTheSameTimeEnabled) {
+            leftHeight = (leftHeight + 1).coerceIn(0, 5)
+            rightHeight = (rightHeight + 1).coerceIn(0, 5)
+            rightHeight
+        } else {
+            rightHeight = (rightHeight + 1).coerceIn(0, 5)
+            rightHeight
+        }
+    }
+
+    private fun decreaseRightHeight(): Int {
+        return if (isTwoFeetAtTheSameTimeEnabled) {
+            leftHeight = (leftHeight - 1).coerceIn(0, 5)
+            rightHeight = (rightHeight - 1).coerceIn(0, 5)
+            rightHeight
+        } else {
+            rightHeight = (rightHeight - 1).coerceIn(0, 5)
+            rightHeight
+        }
+    }
+
+    private fun increaseRightAngle(): Int {
+        return if (isTwoFeetAtTheSameTimeEnabled) {
+            leftAngle = (leftAngle + 1).coerceIn(-5, 5)
+            rightAngle = (rightAngle + 1).coerceIn(-5, 5)
+            rightAngle
+        } else {
+            rightAngle = (rightAngle + 1).coerceIn(-5, 5)
+            rightAngle
+        }
+    }
+
+    private fun decreaseRightAngle(): Int {
+        return if (isTwoFeetAtTheSameTimeEnabled) {
+            leftAngle = (leftAngle - 1).coerceIn(-5, 5)
+            rightAngle = (rightAngle - 1).coerceIn(-5, 5)
+            rightAngle
+        } else {
+            rightAngle = (rightAngle - 1).coerceIn(-5, 5)
+            rightAngle
         }
     }
 
@@ -238,6 +260,7 @@ class AppControlActivity : AppCompatActivity() {
                 Toast.makeText(this, "자세 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun sendAppControlValues() {
         if (bluetoothGatt == null || appControlCharacteristic == null) {
             Toast.makeText(this, "장치에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
@@ -289,4 +312,3 @@ class AppControlActivity : AppCompatActivity() {
         bluetoothGatt = null
     }
 }
-

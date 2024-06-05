@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ListView
@@ -107,15 +108,40 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun startScanning() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            val scanFilter = ScanFilter.Builder().build()
-            val scanSettings = ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
-            bluetoothLeScanner.startScan(listOf(scanFilter), scanSettings, scanCallback)
+        // 기존 스캔을 중지합니다.
+        bluetoothLeScanner.stopScan(scanCallback)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                initiateScan()
+            } else {
+                Toast.makeText(this, "권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+            }
         } else {
-            Toast.makeText(this, "권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                initiateScan()
+            } else {
+                Toast.makeText(this, "권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
+    private fun initiateScan() {
+        if (bluetoothAdapter.isEnabled) {
+            val scanFilter = ScanFilter.Builder().build()
+            val scanSettings = ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
+            bluetoothLeScanner = bluetoothAdapter.bluetoothLeScanner
+            bluetoothLeScanner.startScan(listOf(scanFilter), scanSettings, scanCallback)
+        } else {
+            Toast.makeText(this, "Bluetooth is not enabled", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
+
 
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
@@ -135,15 +161,27 @@ class ScanActivity : AppCompatActivity() {
 
         override fun onScanFailed(errorCode: Int) {
             super.onScanFailed(errorCode)
-            Toast.makeText(this@ScanActivity, "스캔 실패: $errorCode", Toast.LENGTH_SHORT).show()
+            when (errorCode) {
+                ScanCallback.SCAN_FAILED_ALREADY_STARTED -> Toast.makeText(this@ScanActivity, "스캔이 이미 시작되었습니다.", Toast.LENGTH_SHORT).show()
+                ScanCallback.SCAN_FAILED_APPLICATION_REGISTRATION_FAILED -> Toast.makeText(this@ScanActivity, "스캔 실패: 애플리케이션 등록 실패", Toast.LENGTH_SHORT).show()
+                ScanCallback.SCAN_FAILED_INTERNAL_ERROR -> Toast.makeText(this@ScanActivity, "스캔 실패: 내부 오류", Toast.LENGTH_SHORT).show()
+                ScanCallback.SCAN_FAILED_FEATURE_UNSUPPORTED -> Toast.makeText(this@ScanActivity, "스캔 실패: 기능이 지원되지 않습니다.", Toast.LENGTH_SHORT).show()
+                else -> Toast.makeText(this@ScanActivity, "스캔 실패: $errorCode", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun connectToDevice(device: BluetoothDevice) {
         bluetoothGatt = device.connectGatt(this, false, gattCallback)
         BleManager.bluetoothGatt = bluetoothGatt // BleManager에 저장
+
+        // 새로운 장치 주소를 SharedPreferences에 저장
+        val sharedPrefs = getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
+        sharedPrefs.edit().putString("DEVICE_ADDRESS", device.address).apply()
+
         Toast.makeText(this, "${device.name} 연결 중...", Toast.LENGTH_SHORT).show()
     }
+
 
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
@@ -224,4 +262,3 @@ class ScanActivity : AppCompatActivity() {
         bluetoothGatt = null
     }
 }
-
