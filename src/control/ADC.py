@@ -37,7 +37,7 @@ class ADC_SETTING:
 
             model_params.Model = 'potentiometer'
 
-            model_params.I2C_BUS_ID = 2
+            model_params.I2C_BUS_ID = 0
             model_params.LEFT_PIN = 0  
             model_params.RIGHT_PIN = 1             
 

@@ -7,7 +7,6 @@ class Potentiometer:
 
         # self.LEFT_PIN = potentiometer_params.LEFT_PIN
         self.RIGHT_PIN = potentiometer_params.RIGHT_PIN
-
         self.ADS = ADS1x15.ADS1115(self.I2C_BUS_ID, 0x48)
         self.ADS.setGain(self.ADS.PGA_4_096V)
 

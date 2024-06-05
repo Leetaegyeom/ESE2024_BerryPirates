@@ -5,9 +5,9 @@ from Control import Control
 
 class SIGNAL:
     def __init__(self):
-        self.ref_right_distance = 0 # cm
+        self.right_height = 10 # cm
         # self.ref_left_distance = 0 # cm
-        self.ref_right_angle = 0 # degree
+        self.right_angle = 10 # degree
         # self.ref_left_angle = 0 # degree
 
 class FOOTREEDOM:
@@ -18,7 +18,7 @@ class FOOTREEDOM:
         self.ref_value = SIGNAL()
 
     def run(self):
-        self.control.position_control(ref_value)
+        self.control.position_control(self.ref_value)
 
         # elif not(main_signal.app_control_on) and main_signal.foot_control_on: # foot control mode
         #     while True:
