@@ -29,8 +29,8 @@ class GPIO_SETTING:
 
             model_params.Model = 'ultrasonic_left'
 
-            model_params.TRIG_PIN = 23
-            model_params.ECHO_PIN = 24
+            model_params.TRIG_PIN = 5
+            model_params.ECHO_PIN = 6
         
         ### ACTUATOR ###
         elif Model == 'actuator_right_height':
@@ -53,17 +53,17 @@ class GPIO_SETTING:
 
             model_params.Model = 'actuator_left_height'
 
-            model_params.ENA_PIN = 25
-            model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7
+            model_params.ENA_PIN = 17
+            model_params.IN1_PIN = 27
+            model_params.IN2_PIN = 22
 
         elif Model == 'actuator_left_angle':
 
             model_params.Model = 'actuator_left_angle'
 
-            model_params.ENA_PIN = 25
-            model_params.IN1_PIN = 8
-            model_params.IN2_PIN = 7      
+            model_params.ENA_PIN = 13
+            model_params.IN1_PIN = 5
+            model_params.IN2_PIN = 6
 
         else:
             raise ValueError('Model invalid')
