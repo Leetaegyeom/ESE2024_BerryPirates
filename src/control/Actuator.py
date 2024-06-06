@@ -28,7 +28,8 @@ class ActuatorController:
         GPIO.output(self.IN2_PIN, GPIO.LOW)
 
     def stop_actuator(self):
-        GPIO.output(self.ENA_PIN, GPIO.LOW)
+        GPIO.output(self.IN1_PIN, GPIO.LOW)
+        GPIO.output(self.IN2_PIN, GPIO.LOW)
 
     def clean_up(self):
         GPIO.cleanup()

@@ -59,7 +59,6 @@ class Control:
 
         try:
             while self.total_control_flag:
-                # time.sleep(1)
                 if self.right_height_control_flag:
                     meas_right_distance = self.ultrasonic_right.get_distance() # cm
                     right_distance_err = ref_right_distance - meas_right_distance
@@ -92,27 +91,25 @@ class Control:
                             # self.actuator_left_height.extend_actuator()
                             a=1
 
-                meas_right_angle, meas_left_angle = self.potentiometer.get_angle()
+                meas_left_angle, meas_right_angle = self.potentiometer.get_angle()
 
                 if self.right_angle_control_flag:
                     right_angle_err = ref_right_angle - meas_right_angle # degree
-                    # print("right_angle_err : %f" %right_angle_err, " __Control.py")
+                    print("right_angle_err : {:8.4f} __Control.py".format(right_angle_err))
 
                     if abs(right_angle_err) < self.angle_threshold:
                         self.actuator_right_angle.stop_actuator()
                         self.right_angle_control_flag = False
                     else:
                         if right_angle_err > 0:
-                            # self.actuator_right_angle.extend_actuator()
-                            a=1
+                            self.actuator_right_angle.extend_actuator()
                         elif right_angle_err < 0:
-                            # self.actuator_right_angle.retract_actuator()
-                            a=1
+                            self.actuator_right_angle.retract_actuator()
 
 
                 if self.left_angle_control_flag:
                     left_angle_err = ref_left_angle - meas_left_angle # degree
-                    print("left_angle_err : %f" %left_angle_err, " __Control.py")
+                    print("left_angle_err  : {:8.4f} __Control.py".format(left_angle_err))
 
                     if abs(left_angle_err) < self.angle_threshold:
                         self.actuator_left_angle.stop_actuator()
@@ -126,15 +123,15 @@ class Control:
                 if not (self.right_height_control_flag) and not (self.left_height_control_flag) and not(self.right_angle_control_flag) and not(self.left_angle_control_flag):
                     self.total_control_flag = False
                     self.stop_all_actuator()
-                    # self.cleanup_all_actuator()
                     print("POSITION CONTROL COMPLETE __Control.py")
-            
+
+                time.sleep(0.1)
+
         except KeyboardInterrupt:
             print("KEYBOARD INTERRUPT __Control.py")
             self.stop_all_actuator()
             self.cleanup_all_actuator()
 
-    # 발로 조작, main에서 while 추가적으로 사용해야함, while문에서는 sleep할 필요 없음, while문 시작할 때 발로조작 모드인지 확인하는 코드 필요
     def foot_control(self, fix_angular = False, fix_height = False):
         right, left = self.force.guess_user_purpose()
         

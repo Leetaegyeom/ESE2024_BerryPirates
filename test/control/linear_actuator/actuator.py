@@ -6,7 +6,7 @@
 
 import RPi.GPIO as GPIO
 import time
-
+GPIO.cleanup()
 # Constants
 ENA_PIN_1 = 13  # GPIO pin connected to the EN1 pin L298N
 IN1_PIN_1 = 10  # GPIO pin connected to the IN1 pin L298N
@@ -36,16 +36,16 @@ GPIO.output(ENA_PIN_2, GPIO.HIGH)
 try:
     while True:
 
-        # print("1")
+        # left -> 1, right -> 2
         # extend the actuator
-        # GPIO.output(IN1_PIN_1, GPIO.LOW)
-        # GPIO.output(IN2_PIN_1, GPIO.HIGH)
+        GPIO.output(IN1_PIN_1, GPIO.LOW)
+        GPIO.output(IN2_PIN_1, GPIO.HIGH)
         # GPIO.output(IN1_PIN_2, GPIO.LOW)
         # GPIO.output(IN2_PIN_2, GPIO.HIGH)
 
         # retract the actuator
-        GPIO.output(IN1_PIN_1, GPIO.HIGH)
-        GPIO.output(IN2_PIN_1, GPIO.LOW)
+        # GPIO.output(IN1_PIN_1, GPIO.HIGH)
+        # GPIO.output(IN2_PIN_1, GPIO.LOW)
         GPIO.output(IN1_PIN_2, GPIO.HIGH)
         GPIO.output(IN2_PIN_2, GPIO.LOW)
 
@@ -53,7 +53,11 @@ try:
         time.sleep(1) 
 
 except KeyboardInterrupt:
-    pass
+    GPIO.output(IN1_PIN_1, GPIO.LOW)
+    GPIO.output(IN2_PIN_1, GPIO.LOW)
+    GPIO.output(IN1_PIN_2, GPIO.LOW)
+    GPIO.output(IN2_PIN_2, GPIO.LOW)
+    print("STOP")
 
 finally:
     # Cleanup GPIO on program exit

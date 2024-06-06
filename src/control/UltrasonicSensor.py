@@ -11,18 +11,21 @@ class UltrasonicSensor:
         GPIO.setup(self.TRIG_PIN, GPIO.OUT)
         GPIO.setup(self.ECHO_PIN, GPIO.IN)
 
+        self.pulse_start = 0
+        self.pulse_end = 0
+
     def get_distance(self):
         GPIO.output(self.TRIG_PIN, GPIO.HIGH)
         time.sleep(0.00001) 
         GPIO.output(self.TRIG_PIN, GPIO.LOW)
 
         while GPIO.input(self.ECHO_PIN) == 0:
-            pulse_start = time.time()
+            self.pulse_start = time.time()
 
         while GPIO.input(self.ECHO_PIN) == 1:
-            pulse_end = time.time()
+            self.pulse_end = time.time()
 
-        pulse_duration = pulse_end - pulse_start
+        pulse_duration = self.pulse_end - self.pulse_start
 
         distance = pulse_duration * 34300 / 2
 

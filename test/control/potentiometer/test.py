@@ -18,7 +18,8 @@ ADS.setGain(ADS.PGA_4_096V)
 f = ADS.toVoltage()
 
 while True :
-    val_1 = ADS.readADC(0)
+    # 0 -> left, 1 -> right
+    val_1 = ADS.readADC(1)
 
     print("Analog1: {0:d}\t{1:.3f} V".format(val_1, val_1 * f))
 
