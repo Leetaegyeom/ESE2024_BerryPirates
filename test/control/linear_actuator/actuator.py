@@ -38,8 +38,8 @@ try:
 
         # left -> 1, right -> 2
         # extend the actuator
-        GPIO.output(IN1_PIN_1, GPIO.LOW)
-        GPIO.output(IN2_PIN_1, GPIO.HIGH)
+        # GPIO.output(IN1_PIN_1, GPIO.LOW)
+        # GPIO.output(IN2_PIN_1, GPIO.HIGH)
         # GPIO.output(IN1_PIN_2, GPIO.LOW)
         # GPIO.output(IN2_PIN_2, GPIO.HIGH)
 
@@ -49,8 +49,10 @@ try:
         GPIO.output(IN1_PIN_2, GPIO.HIGH)
         GPIO.output(IN2_PIN_2, GPIO.LOW)
 
+        time.sleep(0.1) 
 
-        time.sleep(1) 
+        GPIO.output(IN1_PIN_2, GPIO.LOW)
+        GPIO.output(IN2_PIN_2, GPIO.LOW)
 
 except KeyboardInterrupt:
     GPIO.output(IN1_PIN_1, GPIO.LOW)
