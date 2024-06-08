@@ -15,6 +15,7 @@ class FOOTREEDOM:
 
     def run(self):
         main_signal = self.bluetooth.get_main_signal()
+        self.bluetooth.init_done_flag()
 
         # 6/5 -> app_control_on 신호가 active되는 버튼 바꿔야함
         if main_signal.app_control_on and not(main_signal.foot_control_on): # app control mode
@@ -22,6 +23,7 @@ class FOOTREEDOM:
             ref_value = self.bluetooth.get_ref_value()
             print("REF VALUE :\nR_HEIGHT : %f, R_ANGLE : %f, L_HEIGHT : %f, L_ANGLE : %f"%(ref_value.right_height, ref_value.right_angle, ref_value.left_height, ref_value.left_angle))
             self.control.position_control(ref_value)
+            self.bluetooth.send_done(True)
 
         # 6/5 발로 조절 모드에서 버튼 누를 때마다 T -> F -> T로 바뀌게
         # 6/5 발로 조절 모드 나가면 각도 높이 고정 시그널 False로 
