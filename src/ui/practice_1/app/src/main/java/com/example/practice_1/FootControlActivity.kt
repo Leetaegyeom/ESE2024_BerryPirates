@@ -5,16 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.practice_1.BluetoothLeService.Companion.SIGNAL_CHARACTERISTIC_UUID
 import java.util.*
 
 class FootControlActivity : AppCompatActivity() {
 
     private var bluetoothGatt: BluetoothGatt? = null
     private var footControlCharacteristic: BluetoothGattCharacteristic? = null
-
+    private var mainSignalCharacteristic: BluetoothGattCharacteristic? = null
     private val UART_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     private val FOOT_CONTROL_CHARACTERISTIC_UUID = UUID.fromString("6e400003-b5a3-f393-e0a9-e50e24dcca9e")
 
@@ -44,6 +46,9 @@ class FootControlActivity : AppCompatActivity() {
     private fun initializeUIElements() {
         val homeButton: ImageButton = findViewById(R.id.home_button)
         homeButton.setOnClickListener {
+            updateMainSignalCharacteristic(1, false)
+            updateFootControlCharacteristic(0, false)
+            updateFootControlCharacteristic(1, false)
             val intent = Intent(this@FootControlActivity, MainActivity::class.java)
             startActivity(intent)
         }
@@ -56,18 +61,34 @@ class FootControlActivity : AppCompatActivity() {
 
         val angleLockButton: ImageButton = findViewById(R.id.angle_lock_button)
         angleLockButton.setOnClickListener {
-            updateFootControlCharacteristic(0, true)
+            toggleFootControlCharacteristic(0)
         }
 
         val heightLockButton: ImageButton = findViewById(R.id.height_lock_button)
         heightLockButton.setOnClickListener {
-            updateFootControlCharacteristic(1, true)
+            toggleFootControlCharacteristic(1)
         }
 
         val savePoseButton: ImageButton = findViewById(R.id.save_pose_button)
         savePoseButton.setOnClickListener {
             updateFootControlCharacteristic(2, true)
         }
+    }
+
+    private fun toggleFootControlCharacteristic(index: Int) {
+        if (bluetoothGatt == null || footControlCharacteristic == null) {
+            Toast.makeText(this, "BLE 장치에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (footControlCharacteristic!!.value == null) {
+            footControlCharacteristic!!.value = ByteArray(3) // 적절한 크기의 배열로 초기화
+        }
+
+        val controlValues = footControlCharacteristic!!.value.copyOf()
+        controlValues[index] = if (controlValues[index].toInt() == 1) 0 else 1
+        footControlCharacteristic!!.value = controlValues
+        bluetoothGatt!!.writeCharacteristic(footControlCharacteristic)
     }
 
     private fun updateFootControlCharacteristic(index: Int, value: Boolean) {
@@ -86,6 +107,24 @@ class FootControlActivity : AppCompatActivity() {
         bluetoothGatt!!.writeCharacteristic(footControlCharacteristic)
     }
 
+    private fun updateMainSignalCharacteristic(index: Int, value: Boolean) {
+        if (bluetoothGatt == null || mainSignalCharacteristic == null) {
+            Toast.makeText(this, "BLE 장치에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (mainSignalCharacteristic!!.value == null) {
+            mainSignalCharacteristic!!.value = ByteArray(3) // 적절한 크기의 배열로 초기화
+        }
+
+        val signalValues = mainSignalCharacteristic!!.value.copyOf()
+        signalValues[index] = if (value) 1 else 0
+        mainSignalCharacteristic!!.value = signalValues
+        bluetoothGatt!!.writeCharacteristic(mainSignalCharacteristic).also {
+            Log.d("AppControlActivity", "MainSignalCharacteristic update 요청 완료")
+        }
+    }
+
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             super.onConnectionStateChange(gatt, status, newState)
@@ -102,6 +141,7 @@ class FootControlActivity : AppCompatActivity() {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 val uartService = gatt.getService(UART_SERVICE_UUID)
                 footControlCharacteristic = uartService?.getCharacteristic(FOOT_CONTROL_CHARACTERISTIC_UUID)
+                mainSignalCharacteristic = uartService?.getCharacteristic(SIGNAL_CHARACTERISTIC_UUID)
             }
         }
 
@@ -119,6 +159,13 @@ class FootControlActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        bluetoothGatt?.close()
+        bluetoothGatt = null
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        updateMainSignalCharacteristic(1, false)
         bluetoothGatt?.close()
         bluetoothGatt = null
     }
