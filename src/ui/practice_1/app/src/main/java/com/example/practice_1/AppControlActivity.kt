@@ -109,6 +109,7 @@ class AppControlActivity : AppCompatActivity() {
             showSaveDialog()
         }
 
+
         val home_button: ImageButton = findViewById(R.id.home_button)
         home_button.setOnClickListener {
             // '홈' 버튼 클릭 시 MainActivity로 이동
@@ -322,6 +323,19 @@ class AppControlActivity : AppCompatActivity() {
                 val uartService = gatt.getService(UART_SERVICE_UUID)
                 appControlCharacteristic = uartService?.getCharacteristic(APP_CONTROL_CHARACTERISTIC_UUID)
                 mainSignalCharacteristic = uartService?.getCharacteristic(SIGNAL_CHARACTERISTIC_UUID)
+            }
+        }
+
+        //자세 조절 완료 시그널 받는 객체
+        override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
+            super.onCharacteristicChanged(gatt, characteristic)
+            if (characteristic.uuid == APP_CONTROL_CHARACTERISTIC_UUID) {
+                val doneStatus = characteristic.value[0].toInt() == 1
+                if (doneStatus) {
+                    runOnUiThread {
+                        Toast.makeText(this@AppControlActivity, "자세 조절이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
