@@ -124,6 +124,7 @@ class AppControlActivity : AppCompatActivity() {
         val record_button: ImageButton = findViewById(R.id.record_button)
         record_button.setOnClickListener {
             // '기록' 버튼 클릭 시 RecordActivity로 이동
+            updateMainSignalCharacteristic(2, false)
             val intent = Intent(this@AppControlActivity, RecordActivity::class.java)
             startActivity(intent)
         }
@@ -336,7 +337,7 @@ class AppControlActivity : AppCompatActivity() {
                 val doneStatus = characteristic.value[0].toInt() == 1
                 if (doneStatus) {
                     runOnUiThread {
-                        Toast.makeText(this@AppControlActivity, "자세 조절 중입니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@AppControlActivity, "자세 조절이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -353,7 +354,7 @@ class AppControlActivity : AppCompatActivity() {
                         }
                         APP_CONTROL_CHARACTERISTIC_UUID -> {
                             Log.d("AppControlActivity", "AppControlCharacteristic 값이 성공적으로 설정됨")
-                            Toast.makeText(this@AppControlActivity, "발 받침대가 조절되었습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AppControlActivity, "발 받침대가 조절을 시작합니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

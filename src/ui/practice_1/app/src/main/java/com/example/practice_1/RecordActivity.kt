@@ -32,7 +32,7 @@ class RecordActivity : AppCompatActivity() {
     val db = Firebase.firestore
     private lateinit var adapter: RecordAdapter
 
-    // Bluetooth variables
+    // Bluetooth 변수
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private var bluetoothGatt: BluetoothGatt? = null
     private var appControlCharacteristic: BluetoothGattCharacteristic? = null
@@ -45,6 +45,8 @@ class RecordActivity : AppCompatActivity() {
     private val sharedPrefs: SharedPreferences by lazy {
         getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
     }
+
+    private lateinit var selectedRecord: Record
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +114,7 @@ class RecordActivity : AppCompatActivity() {
     }
 
     private fun onRecordClick(record: Record) {
+        selectedRecord = record
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_record_options, null)
         val selectedDocumentTextView: TextView = dialogView.findViewById(R.id.selectedDocumentTextView)
         selectedDocumentTextView.text = "'${record.documentName}' 자세를 선택하셨습니다."
@@ -123,7 +126,6 @@ class RecordActivity : AppCompatActivity() {
         dialogView.findViewById<Button>(R.id.adjustPostureButton).setOnClickListener {
             // 자세 조절하기 클릭 처리
             updateMainSignalCharacteristic(2, true)
-            sendAppControlValues(record)
             dialog.dismiss()
         }
 
@@ -271,6 +273,7 @@ class RecordActivity : AppCompatActivity() {
                     when (characteristic.uuid) {
                         SIGNAL_CHARACTERISTIC_UUID -> {
                             Log.d("RecordActivity", "MainSignalCharacteristic 값이 성공적으로 설정됨")
+                            sendAppControlValues(selectedRecord)
                             Toast.makeText(this@RecordActivity, "MainSignalCharacteristic이 성공적으로 설정되었습니다.", Toast.LENGTH_SHORT).show()
                         }
                         APP_CONTROL_CHARACTERISTIC_UUID -> {
@@ -310,3 +313,4 @@ class RecordActivity : AppCompatActivity() {
         bluetoothGatt = null
     }
 }
+
