@@ -69,9 +69,11 @@ class AppControlCharacteristic(Characteristic):
         Characteristic.__init__(self, bus, index, self.APP_CONTROL_CHARACTERISTIC_UUID,
                                 ['read', 'write'], service)
         self.value = [0.0, 0.0, 0.0, 0.0]
+        self.done = False  # Adding the done attribute
 
     def WriteValue(self, value, options):
         self.value = [float(x) for x in value]
+
         self.on_value_changed()
         print(f'AppControl updated: {self.value}')
 
@@ -83,6 +85,11 @@ class AppControlCharacteristic(Characteristic):
 
     def get_app_controls(self):
         return self.value
+
+    def send_done(self, done):
+        self.done = bool(done)
+        self.PropertiesChanged(GATT_CHRC_IFACE, {'Done': self.done}, [])
+        print(f'Done status sent: {self.done}')
 
 class RecordCharacteristic(Characteristic):
     RECORD_CHARACTERISTIC_UUID = '6e400005-b5a3-f393-e0a9-e50e24dcca9e'
@@ -228,3 +235,9 @@ class Bluetooth:
 
     def send_save_pose(self, save_pose):
         self.record_characteristic.send_record(save_pose)
+
+    def send_done(self, done):
+        self.app_control_characteristic.send_done(done)
+    
+    def init_done_flag(self):
+        self.app_control_characteristic.done = False

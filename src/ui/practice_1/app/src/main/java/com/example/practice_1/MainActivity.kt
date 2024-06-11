@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         val app_control_button: ImageButton = findViewById(R.id.app_control_button)
         app_control_button.setOnClickListener {
-            updateMainSignalCharacteristic(2, true)
+//            updateMainSignalCharacteristic(2, true)
             val intent = Intent(this@MainActivity, AppControlActivity::class.java)
             startActivity(intent)
         }
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
         // 특성 값이 초기화되지 않았을 경우 초기화
         if (mainSignalCharacteristic!!.value == null) {
-            mainSignalCharacteristic!!.value = ByteArray(4) // 적절한 크기의 배열로 초기화
+            mainSignalCharacteristic!!.value = ByteArray(3) // 적절한 크기의 배열로 초기화
         }
 
         val signalValues = mainSignalCharacteristic!!.value.copyOf()

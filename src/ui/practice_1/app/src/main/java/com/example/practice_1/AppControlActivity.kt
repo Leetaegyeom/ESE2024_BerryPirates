@@ -5,16 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.firestore.ktx.firestore
 import java.util.*
-import androidx.appcompat.app.AlertDialog
 
 class AppControlActivity : AppCompatActivity() {
     private var leftHeight = 0
@@ -28,9 +29,11 @@ class AppControlActivity : AppCompatActivity() {
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private var bluetoothGatt: BluetoothGatt? = null
     private var appControlCharacteristic: BluetoothGattCharacteristic? = null
+    private var mainSignalCharacteristic: BluetoothGattCharacteristic? = null
 
     private val UART_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     private val APP_CONTROL_CHARACTERISTIC_UUID = UUID.fromString("6e400004-b5a3-f393-e0a9-e50e24dcca9e")
+    private val SIGNAL_CHARACTERISTIC_UUID = UUID.fromString("6e400002-b5a3-f393-e0a9-e50e24dcca9e")
 
     private val sharedPrefs: SharedPreferences by lazy {
         getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
@@ -96,6 +99,7 @@ class AppControlActivity : AppCompatActivity() {
         // '이 자세로 발 받침대 조절하기' 버튼 클릭 이벤트
         val finalAppControlButton: ImageButton = findViewById(R.id.finalAppControlButton)
         finalAppControlButton.setOnClickListener {
+            updateMainSignalCharacteristic(2, true)
             sendAppControlValues()
         }
 
@@ -105,11 +109,14 @@ class AppControlActivity : AppCompatActivity() {
             showSaveDialog()
         }
 
+
         val home_button: ImageButton = findViewById(R.id.home_button)
         home_button.setOnClickListener {
             // '홈' 버튼 클릭 시 MainActivity로 이동
+            updateMainSignalCharacteristic(2, false)
             val intent = Intent(this@AppControlActivity, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         val record_button: ImageButton = findViewById(R.id.record_button)
@@ -261,6 +268,25 @@ class AppControlActivity : AppCompatActivity() {
             }
     }
 
+    private fun updateMainSignalCharacteristic(index: Int, value: Boolean) {
+        if (bluetoothGatt == null || mainSignalCharacteristic == null) {
+            Toast.makeText(this, "BLE 장치에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (mainSignalCharacteristic!!.value == null) {
+            mainSignalCharacteristic!!.value = ByteArray(3) // 적절한 크기의 배열로 초기화
+        }
+
+        val signalValues = mainSignalCharacteristic!!.value.copyOf()
+        signalValues[index] = if (value) 1 else 0
+        mainSignalCharacteristic!!.value = signalValues
+
+        bluetoothGatt!!.writeCharacteristic(mainSignalCharacteristic).also {
+            Log.d("AppControlActivity", "MainSignalCharacteristic update 요청 완료")
+        }
+    }
+
     private fun sendAppControlValues() {
         if (bluetoothGatt == null || appControlCharacteristic == null) {
             Toast.makeText(this, "장치에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
@@ -268,13 +294,16 @@ class AppControlActivity : AppCompatActivity() {
         }
 
         val values = byteArrayOf(
-            leftHeight.toByte(),
-            leftAngle.toByte(),
-            rightHeight.toByte(),
-            rightAngle.toByte()
+            (leftAngle*4).toByte(),
+            (leftHeight*4).toByte(),
+            (rightAngle*4).toByte(),
+            (rightHeight*4).toByte()
         )
         appControlCharacteristic?.value = values
-        bluetoothGatt?.writeCharacteristic(appControlCharacteristic)
+
+        bluetoothGatt?.writeCharacteristic(appControlCharacteristic).also {
+            Log.d("AppControlActivity", "AppControlCharacteristic 값 설정 요청 완료: ${values.contentToString()}")
+        }
     }
 
     private val gattCallback = object : BluetoothGattCallback() {
@@ -293,21 +322,65 @@ class AppControlActivity : AppCompatActivity() {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 val uartService = gatt.getService(UART_SERVICE_UUID)
                 appControlCharacteristic = uartService?.getCharacteristic(APP_CONTROL_CHARACTERISTIC_UUID)
+                mainSignalCharacteristic = uartService?.getCharacteristic(SIGNAL_CHARACTERISTIC_UUID)
+            }
+        }
+
+        //자세 조절 완료 시그널 받는 객체
+        override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
+            super.onCharacteristicChanged(gatt, characteristic)
+            if (characteristic.uuid == APP_CONTROL_CHARACTERISTIC_UUID) {
+                val doneStatus = characteristic.value[0].toInt() == 1
+                if (doneStatus) {
+                    runOnUiThread {
+                        Toast.makeText(this@AppControlActivity, "자세 조절이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
         override fun onCharacteristicWrite(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
             super.onCharacteristicWrite(gatt, characteristic, status)
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                runOnUiThread { Toast.makeText(this@AppControlActivity, "발 받침대가 조절되었습니다.", Toast.LENGTH_SHORT).show() }
+                runOnUiThread {
+                    when (characteristic.uuid) {
+                        SIGNAL_CHARACTERISTIC_UUID -> {
+                            Log.d("AppControlActivity", "MainSignalCharacteristic 값이 성공적으로 설정됨")
+                            sendAppControlValues()
+                        }
+                        APP_CONTROL_CHARACTERISTIC_UUID -> {
+                            Log.d("AppControlActivity", "AppControlCharacteristic 값이 성공적으로 설정됨")
+                            Toast.makeText(this@AppControlActivity, "발 받침대가 조절되었습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             } else {
-                runOnUiThread { Toast.makeText(this@AppControlActivity, "발 받침대 조절에 실패했습니다.", Toast.LENGTH_SHORT).show() }
+                runOnUiThread {
+                    when (characteristic.uuid) {
+                        SIGNAL_CHARACTERISTIC_UUID -> Log.d("AppControlActivity", "MainSignalCharacteristic 값 설정 실패")
+                        APP_CONTROL_CHARACTERISTIC_UUID -> Log.d("AppControlActivity", "AppControlCharacteristic 값 설정 실패")
+                    }
+                    Toast.makeText(this@AppControlActivity, "발 받침대 조절에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        bluetoothGatt?.close()
+        bluetoothGatt = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        bluetoothGatt?.close()
+        bluetoothGatt = null
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        updateMainSignalCharacteristic(2, false)
         bluetoothGatt?.close()
         bluetoothGatt = null
     }
