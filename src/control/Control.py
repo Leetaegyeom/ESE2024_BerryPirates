@@ -62,7 +62,7 @@ class Control:
                 if self.right_height_control_flag:
                     meas_right_distance = self.ultrasonic_right.get_distance() # cm
                     right_distance_err = ref_right_distance - meas_right_distance
-                    print("right_distance_err : {:8.4f} __Control.py".format(right_distance_err))
+                    # print("right_distance_err : {:8.4f} __Control.py".format(right_distance_err))
 
                     if abs(right_distance_err) < self.distance_threshold:
                         self.actuator_right_height.stop_actuator()

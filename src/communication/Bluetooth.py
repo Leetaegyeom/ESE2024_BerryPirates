@@ -189,7 +189,7 @@ class Bluetooth:
                                             reply_handler=register_app_cb,
                                             error_handler=register_app_error_cb)
 
-        mainloop_thread = threading.Thread(target=mainloop.run())
+        mainloop_thread = threading.Thread(target=mainloop.run)
         mainloop_thread.start()
 
         self.main_signal = SignalField.MainSignalCharacteristic()

@@ -5,22 +5,24 @@ sys.path.append('./control')
 from Control import Control
 from Bluetooth import Bluetooth
 
+import time
+
 class FOOTREEDOM:
     def __init__(self):
         self.control = Control()
         print("CONTROL SETTING COMPLETE __main.py")
-        
         self.bluetooth = Bluetooth()
         print("BLUETOOTH SETTING COMPLETE __main.py")
 
     def run(self):
         main_signal = self.bluetooth.get_main_signal()
-
+        
         # 6/5 -> app_control_on 신호가 active되는 버튼 바꿔야함
         if main_signal.app_control_on and not(main_signal.foot_control_on): # app control mode
             print("APP CONTROL MODE ON !!")
+            time.sleep(1)
             ref_value = self.bluetooth.get_ref_value()
-            print("REF VALUE :\nR_HEIGHT : %f, R_ANGLE : %f, L_HEIGHT : %f, L_ANGLE : %f"%(ref_value.right_height, ref_value.right_angle, ref_value.left_height, ref_value.left_angle))
+            print("\nREF VALUE :\nR_HEIGHT : %f, R_ANGLE : %f, L_HEIGHT : %f, L_ANGLE : \n%f"%(ref_value.right_height, ref_value.right_angle, ref_value.left_height, ref_value.left_angle))
             self.control.position_control(ref_value)
 
         # 6/5 발로 조절 모드에서 버튼 누를 때마다 T -> F -> T로 바뀌게

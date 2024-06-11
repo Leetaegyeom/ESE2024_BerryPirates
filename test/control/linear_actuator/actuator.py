@@ -44,8 +44,8 @@ try:
         # GPIO.output(IN2_PIN_2, GPIO.HIGH)
 
         # retract the actuator
-        # GPIO.output(IN1_PIN_1, GPIO.HIGH)
-        # GPIO.output(IN2_PIN_1, GPIO.LOW)
+        GPIO.output(IN1_PIN_1, GPIO.HIGH)
+        GPIO.output(IN2_PIN_1, GPIO.LOW)
         GPIO.output(IN1_PIN_2, GPIO.HIGH)
         GPIO.output(IN2_PIN_2, GPIO.LOW)
 
