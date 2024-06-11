@@ -47,12 +47,17 @@ class RecordActivity : AppCompatActivity() {
     }
 
     private lateinit var selectedRecord: Record
+    // 프로파일 이름 변수 추가
+    private lateinit var profileName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record)
 
+        profileName = sharedPrefs.getString("SELECTED_PROFILE", "default") ?: "default"
+
         bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+
 
         val deviceAddress = sharedPrefs.getString("DEVICE_ADDRESS", null)
         if (deviceAddress != null) {
@@ -70,7 +75,7 @@ class RecordActivity : AppCompatActivity() {
         adapter = RecordAdapter(mutableListOf(), this::onRecordClick)
         recyclerView.adapter = adapter
 
-        db.collection("poses")
+        db.collection("$profileName")
             .get()
             .addOnSuccessListener { result ->
                 val records = mutableListOf<Record>()
@@ -147,7 +152,7 @@ class RecordActivity : AppCompatActivity() {
             .setMessage("'${record.documentName}' 자세를 삭제하시겠습니까?")
             .setPositiveButton("예") { _, _ ->
                 // 삭제 처리
-                db.collection("poses").document(record.documentName)
+                db.collection("$profileName").document(record.documentName)
                     .delete()
                     .addOnSuccessListener {
                         Toast.makeText(this, "'${record.documentName}' 자세가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
@@ -178,10 +183,10 @@ class RecordActivity : AppCompatActivity() {
                 if (newName.isNotBlank()) {
                     // 이름 변경 처리
                     val newRecord = Record(newName, record.leftHeight, record.leftAngle, record.rightHeight, record.rightAngle)
-                    db.collection("poses").document(record.documentName)
+                    db.collection("$profileName").document(record.documentName)
                         .delete()
                         .addOnSuccessListener {
-                            db.collection("poses").document(newName)
+                            db.collection("$profileName").document(newName)
                                 .set(newRecord)
                                 .addOnSuccessListener {
                                     Toast.makeText(this, "'${record.documentName}'에서 '${newName}'(으)로 변경되었습니다.", Toast.LENGTH_SHORT).show()
@@ -274,11 +279,11 @@ class RecordActivity : AppCompatActivity() {
                         SIGNAL_CHARACTERISTIC_UUID -> {
                             Log.d("RecordActivity", "MainSignalCharacteristic 값이 성공적으로 설정됨")
                             sendAppControlValues(selectedRecord)
-                            Toast.makeText(this@RecordActivity, "MainSignalCharacteristic이 성공적으로 설정되었습니다.", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this@RecordActivity, "MainSignalCharacteristic이 성공적으로 설정되었습니다.", Toast.LENGTH_SHORT).show()
                         }
                         APP_CONTROL_CHARACTERISTIC_UUID -> {
                             Log.d("RecordActivity", "AppControlCharacteristic 값이 성공적으로 설정됨")
-                            Toast.makeText(this@RecordActivity, "발 받침대가 조절되었습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@RecordActivity, "발 받침대가 조절을 시작합니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

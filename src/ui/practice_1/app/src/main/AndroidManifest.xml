@@ -45,6 +45,11 @@
             android:theme="@style/Theme.Practice_1" />
         <activity
             android:name=".MainActivity"
+            android:exported="false"
+            android:label="MainActivity"
+            android:theme="@style/Theme.Practice_1" />
+        <activity
+            android:name=".ProfileSelectionActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

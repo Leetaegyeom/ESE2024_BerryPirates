@@ -41,13 +41,14 @@ class AppControlActivity : AppCompatActivity() {
     private val sharedPrefs: SharedPreferences by lazy {
         getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
     }
+    private lateinit var profileName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_control)
 
         bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
-
+        profileName = sharedPrefs.getString("SELECTED_PROFILE", "default") ?: "default"
         // UI 요소 초기화
         initializeUIElements()
 
@@ -138,13 +139,35 @@ class AppControlActivity : AppCompatActivity() {
         decreaseAction: () -> Int
     ) {
         increaseButton.setOnClickListener {
-            textView.text = increaseAction().toString()
+            val newValue = increaseAction()
+            textView.text = newValue.toString()
+            if (isTwoFeetAtTheSameTimeEnabled) {
+                updateHeightTextViews()
+                updateAngleTextViews()
+            }
         }
         decreaseButton.setOnClickListener {
-            textView.text = decreaseAction().toString()
+            val newValue = decreaseAction()
+            textView.text = newValue.toString()
+            if (isTwoFeetAtTheSameTimeEnabled) {
+                updateHeightTextViews()
+                updateAngleTextViews()
+            }
         }
     }
+    private fun updateHeightTextViews() {
+        val leftHeightTextView: TextView = findViewById(R.id.leftHeightTextView)
+        val rightHeightTextView: TextView = findViewById(R.id.rightHeightTextView)
+        leftHeightTextView.text = leftHeight.toString()
+        rightHeightTextView.text = rightHeight.toString()
+    }
 
+    private fun updateAngleTextViews() {
+        val leftAngleTextView: TextView = findViewById(R.id.leftAngleTextView)
+        val rightAngleTextView: TextView = findViewById(R.id.rightAngleTextView)
+        leftAngleTextView.text = leftAngle.toString()
+        rightAngleTextView.text = rightAngle.toString()
+    }
     private fun increaseLeftHeight(): Int {
         return if (isTwoFeetAtTheSameTimeEnabled) {
             leftHeight = (leftHeight + 1).coerceIn(0, 5)
@@ -261,7 +284,7 @@ class AppControlActivity : AppCompatActivity() {
             "rightAngle" to rightAngle
         )
 
-        db.collection("poses").document(poseName)
+        db.collection("$profileName").document(poseName)
             .set(poseData)
             .addOnSuccessListener {
                 Toast.makeText(this, "자세가 성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()

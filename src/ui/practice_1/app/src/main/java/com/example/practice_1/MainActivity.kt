@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private var bluetoothGatt: BluetoothGatt? = null
     private var mainSignalCharacteristic: BluetoothGattCharacteristic? = null
+    private lateinit var bluetoothStatusImageView: ImageView
 
     private val UART_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     private val SIGNAL_CHARACTERISTIC_UUID = UUID.fromString("6e400002-b5a3-f393-e0a9-e50e24dcca9e")
@@ -24,11 +27,20 @@ class MainActivity : AppCompatActivity() {
         getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+
+        bluetoothStatusImageView = findViewById(R.id.bluetoothStatusImageView)
+        val welcomeTextView: TextView = findViewById(R.id.welcomeTextView)
+        val profileName = sharedPrefs.getString("SELECTED_PROFILE", null)
+        if (profileName != null) {
+            welcomeTextView.text = "$profileName 님, 편안한 자세로 발 받침대를 사용하세요"
+        }
 
         val power_off_button: ImageButton = findViewById(R.id.power_off_button)
         power_off_button.setOnClickListener {
@@ -44,7 +56,6 @@ class MainActivity : AppCompatActivity() {
 
         val app_control_button: ImageButton = findViewById(R.id.app_control_button)
         app_control_button.setOnClickListener {
-//            updateMainSignalCharacteristic(2, true)
             val intent = Intent(this@MainActivity, AppControlActivity::class.java)
             startActivity(intent)
         }
@@ -79,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun updateMainSignalCharacteristic(index: Int, value: Boolean) {
         if (bluetoothGatt == null || mainSignalCharacteristic == null) {
             Toast.makeText(this, "BLE 장치에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show()
@@ -97,15 +107,16 @@ class MainActivity : AppCompatActivity() {
         bluetoothGatt!!.writeCharacteristic(mainSignalCharacteristic)
     }
 
-
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             super.onConnectionStateChange(gatt, status, newState)
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                runOnUiThread { Toast.makeText(this@MainActivity, "연결되었습니다", Toast.LENGTH_SHORT).show() }
+                //runOnUiThread { Toast.makeText(this@MainActivity, "연결되었습니다", Toast.LENGTH_SHORT).show() }
+                bluetoothStatusImageView.visibility = ImageView.VISIBLE
                 gatt.discoverServices()
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                runOnUiThread { Toast.makeText(this@MainActivity, "연결이 끊어졌습니다", Toast.LENGTH_SHORT).show() }
+                //runOnUiThread { Toast.makeText(this@MainActivity, "연결이 끊어졌습니다", Toast.LENGTH_SHORT).show() }
+                bluetoothStatusImageView.visibility = ImageView.GONE
             }
         }
 

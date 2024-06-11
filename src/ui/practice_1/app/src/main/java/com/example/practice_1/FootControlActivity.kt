@@ -65,6 +65,9 @@ class FootControlActivity : AppCompatActivity() {
 
         val recordButton: ImageButton = findViewById(R.id.record_button)
         recordButton.setOnClickListener {
+            updateMainSignalCharacteristic(1, false)
+            updateFootControlCharacteristic(0, false)
+            updateFootControlCharacteristic(1, false)
             val intent = Intent(this@FootControlActivity, RecordActivity::class.java)
             startActivity(intent)
         }
