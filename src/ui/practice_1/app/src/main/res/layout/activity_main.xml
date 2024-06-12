@@ -1,194 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical"
     android:background="#FFFFE0">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="자유분발"
-        android:textColor="#FF000000"
-        android:gravity="center"
-        android:textSize="50sp"
-        android:fontFamily="@font/notosanskr_bold"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="편안한 자세로\n 발 받침대를 사용하세요"
-        android:textColor="#FF000000"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:textSize="30dp"
-        android:fontFamily="@font/notosanskr_medium"/>
-
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:src="@drawable/image_with_yellow_background" />
+        android:id="@+id/bluetoothStatusImageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="start|top"
+        android:padding="16dp"
+        android:src="@drawable/bluetooth_connection_detected_btn"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="자유분발"
+            android:textColor="#FF000000"
+            android:gravity="center"
+            android:textSize="50sp"
+            android:fontFamily="@font/notosanskr_bold"/>
+
+        <TextView
+            android:id="@+id/welcomeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="편안한 자세로\n 발 받침대를 사용하세요"
+            android:textColor="#FF000000"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="30dp"
+            android:fontFamily="@font/notosanskr_medium"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:src="@drawable/image_with_yellow_background" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="center">
 
-            <ImageButton
-                android:id="@+id/power_off_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/power_off_btn"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="전원 OFF"
-                android:gravity="center"
-                android:textColor="#FF000000"
-                android:fontFamily="@font/notosanskr_regular"/>
+                <ImageButton
+                    android:id="@+id/power_off_button"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/power_off_btn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전원 OFF"
+                    android:gravity="center"
+                    android:textColor="#FF000000"
+                    android:fontFamily="@font/notosanskr_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/foot_control_button"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/foot_control_btn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="발로 조절"
+                    android:gravity="center"
+                    android:textColor="#FF000000"
+                    android:fontFamily="@font/notosanskr_regular"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="center">
 
-            <ImageButton
-                android:id="@+id/foot_control_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/foot_control_btn"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="발로 조절"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:textColor="#FF000000"
-                android:fontFamily="@font/notosanskr_regular"/>
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/app_control_button"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/app_control_btn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="앱으로 조절"
+                    android:gravity="center"
+                    android:textColor="#FF000000"
+                    android:fontFamily="@font/notosanskr_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/scan_button"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/bluetooth_btn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="블루투스 연결"
+                    android:gravity="center"
+                    android:textColor="#FF000000"
+                    android:fontFamily="@font/notosanskr_regular"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/home_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/home_btn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="홈"
+                    android:gravity="center"
+                    android:textColor="#FF000000"
+                    android:fontFamily="@font/notosanskr_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/record_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/record_btn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="기록"
+                    android:gravity="center"
+                    android:textColor="#FF000000"
+                    android:fontFamily="@font/notosanskr_regular"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/app_control_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/app_control_btn"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="앱으로 조절"
-                android:gravity="center"
-                android:textColor="#FF000000"
-                android:fontFamily="@font/notosanskr_regular"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/scan_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/bluetooth_btn"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="블루투스 연결"
-                android:gravity="center"
-                android:textColor="#FF000000"
-                android:fontFamily="@font/notosanskr_regular"/>
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/home_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/home_btn"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="홈"
-                android:gravity="center"
-                android:textColor="#FF000000"
-                android:fontFamily="@font/notosanskr_regular"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/record_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/record_btn"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="기록"
-                android:gravity="center"
-                android:textColor="#FF000000"
-                android:fontFamily="@font/notosanskr_regular"/>
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+</FrameLayout>

@@ -15,7 +15,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.firestore.ktx.firestore
+import java.nio.ByteBuffer
 import java.util.*
+
+
 
 class AppControlActivity : AppCompatActivity() {
     private var leftHeight = 0
@@ -38,13 +41,14 @@ class AppControlActivity : AppCompatActivity() {
     private val sharedPrefs: SharedPreferences by lazy {
         getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
     }
+    private lateinit var profileName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_control)
 
         bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
-
+        profileName = sharedPrefs.getString("SELECTED_PROFILE", "default") ?: "default"
         // UI 요소 초기화
         initializeUIElements()
 
@@ -109,7 +113,6 @@ class AppControlActivity : AppCompatActivity() {
             showSaveDialog()
         }
 
-
         val home_button: ImageButton = findViewById(R.id.home_button)
         home_button.setOnClickListener {
             // '홈' 버튼 클릭 시 MainActivity로 이동
@@ -122,6 +125,7 @@ class AppControlActivity : AppCompatActivity() {
         val record_button: ImageButton = findViewById(R.id.record_button)
         record_button.setOnClickListener {
             // '기록' 버튼 클릭 시 RecordActivity로 이동
+            updateMainSignalCharacteristic(2, false)
             val intent = Intent(this@AppControlActivity, RecordActivity::class.java)
             startActivity(intent)
         }
@@ -135,13 +139,35 @@ class AppControlActivity : AppCompatActivity() {
         decreaseAction: () -> Int
     ) {
         increaseButton.setOnClickListener {
-            textView.text = increaseAction().toString()
+            val newValue = increaseAction()
+            textView.text = newValue.toString()
+            if (isTwoFeetAtTheSameTimeEnabled) {
+                updateHeightTextViews()
+                updateAngleTextViews()
+            }
         }
         decreaseButton.setOnClickListener {
-            textView.text = decreaseAction().toString()
+            val newValue = decreaseAction()
+            textView.text = newValue.toString()
+            if (isTwoFeetAtTheSameTimeEnabled) {
+                updateHeightTextViews()
+                updateAngleTextViews()
+            }
         }
     }
+    private fun updateHeightTextViews() {
+        val leftHeightTextView: TextView = findViewById(R.id.leftHeightTextView)
+        val rightHeightTextView: TextView = findViewById(R.id.rightHeightTextView)
+        leftHeightTextView.text = leftHeight.toString()
+        rightHeightTextView.text = rightHeight.toString()
+    }
 
+    private fun updateAngleTextViews() {
+        val leftAngleTextView: TextView = findViewById(R.id.leftAngleTextView)
+        val rightAngleTextView: TextView = findViewById(R.id.rightAngleTextView)
+        leftAngleTextView.text = leftAngle.toString()
+        rightAngleTextView.text = rightAngle.toString()
+    }
     private fun increaseLeftHeight(): Int {
         return if (isTwoFeetAtTheSameTimeEnabled) {
             leftHeight = (leftHeight + 1).coerceIn(0, 5)
@@ -258,7 +284,7 @@ class AppControlActivity : AppCompatActivity() {
             "rightAngle" to rightAngle
         )
 
-        db.collection("poses").document(poseName)
+        db.collection("$profileName").document(poseName)
             .set(poseData)
             .addOnSuccessListener {
                 Toast.makeText(this, "자세가 성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
@@ -293,11 +319,13 @@ class AppControlActivity : AppCompatActivity() {
             return
         }
 
+
+
         val values = byteArrayOf(
             (leftAngle*4).toByte(),
-            (leftHeight*4).toByte(),
+            (leftHeight).toByte(),
             (rightAngle*4).toByte(),
-            (rightHeight*4).toByte()
+            (rightHeight).toByte()
         )
         appControlCharacteristic?.value = values
 
@@ -326,7 +354,6 @@ class AppControlActivity : AppCompatActivity() {
             }
         }
 
-        //자세 조절 완료 시그널 받는 객체
         override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
             super.onCharacteristicChanged(gatt, characteristic)
             if (characteristic.uuid == APP_CONTROL_CHARACTERISTIC_UUID) {
@@ -350,7 +377,7 @@ class AppControlActivity : AppCompatActivity() {
                         }
                         APP_CONTROL_CHARACTERISTIC_UUID -> {
                             Log.d("AppControlActivity", "AppControlCharacteristic 값이 성공적으로 설정됨")
-                            Toast.makeText(this@AppControlActivity, "발 받침대가 조절되었습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AppControlActivity, "발 받침대가 조절을 시작합니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
