@@ -23,12 +23,12 @@ class ForceSensor:
         left_front_value = self.ADS.readADC(self.LEFT_FRONT_PIN)
         left_back_value = self.ADS.readADC(self.LEFT_BACK_PIN)
         right_front_value = self.ADS.readADC(self.RIGHT_FRONT_PIN)
-        rigth_back_value = self.ADS.readADC(self.RIGHT_BACK_PIN)
+        right_back_value = self.ADS.readADC(self.RIGHT_BACK_PIN)
 
-        return left_front_value, left_back_value, right_front_value, rigth_back_value
+        return left_front_value, left_back_value, right_front_value, right_back_value
 
     def guess_user_purpose(self):
-        left_front_value, left_back_value, right_front_value, rigth_back_value = self.measure_value()
+        left_front_value, left_back_value, right_front_value, right_back_value = self.measure_value()
 
         if abs(left_front_value) < self.MIN_VALUE and abs(left_back_value) < self.MIN_VALUE:
             self.left = "FRONT BACK UP"

@@ -16,7 +16,7 @@ class Potentiometer:
         self.RATIO = self.MAX_ANGLE/self.MAX_VALUE
 
         self.RIGHT_OFFSET = 2.660
-        self.LEFT_OFFSET = 3.043
+        self.LEFT_OFFSET = 3.012
         self.f = self.ADS.toVoltage()
 
     def measure_value(self):

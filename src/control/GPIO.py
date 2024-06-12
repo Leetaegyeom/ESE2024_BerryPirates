@@ -10,6 +10,7 @@ class GPIO_STRUCT:
         self.ENA_PIN = None
         self.IN1_PIN = None
         self.IN2_PIN = None
+        self.FREQUENCY = None
 
 class GPIO_SETTING:
     @staticmethod
@@ -40,6 +41,7 @@ class GPIO_SETTING:
             model_params.ENA_PIN = 25
             model_params.IN1_PIN = 8
             model_params.IN2_PIN = 7
+            model_params.FREQUENCY = 1000
 
         elif Model == 'actuator_right_angle':
 
@@ -48,6 +50,7 @@ class GPIO_SETTING:
             model_params.ENA_PIN = 16
             model_params.IN1_PIN = 20
             model_params.IN2_PIN = 21
+            model_params.FREQUENCY = 1000
 
         elif Model == 'actuator_left_height':
 
@@ -56,6 +59,7 @@ class GPIO_SETTING:
             model_params.ENA_PIN = 17
             model_params.IN1_PIN = 27
             model_params.IN2_PIN = 22
+            model_params.FREQUENCY = 1000
 
         elif Model == 'actuator_left_angle':
 
@@ -64,6 +68,7 @@ class GPIO_SETTING:
             model_params.ENA_PIN = 13
             model_params.IN1_PIN = 10
             model_params.IN2_PIN = 9
+            model_params.FREQUENCY = 1000
 
         else:
             raise ValueError('Model invalid')

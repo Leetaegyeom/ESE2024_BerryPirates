@@ -9,24 +9,24 @@ import time
 
 class Control:
     def __init__(self):
-        self.actuator_right_height_params = GPIO.GPIO_SETTING.getSensorParams('actuator_right_height')
-        # self.actuator_left_height_params = GPIO.GPIO_SETTING.getSensorParams('actuator_left_height')
-        self.actuator_right_angle_params = GPIO.GPIO_SETTING.getSensorParams('actuator_right_angle')
-        # self.actuator_left_angle_params = GPIO.GPIO_SETTING.getSensorParams('actuator_left_angle')
-        self.ultrasonic_right_params = GPIO.GPIO_SETTING.getSensorParams('ultrasonic_right')
-        # self.ultrasonic_left_params = GPIO.GPIO_SETTING.getSensorParams('ultrasonic_left')
+        # self.actuator_right_height_params = GPIO.GPIO_SETTING.getSensorParams('actuator_right_height')
+        self.actuator_left_height_params = GPIO.GPIO_SETTING.getSensorParams('actuator_left_height')
+        # self.actuator_right_angle_params = GPIO.GPIO_SETTING.getSensorParams('actuator_right_angle')
+        self.actuator_left_angle_params = GPIO.GPIO_SETTING.getSensorParams('actuator_left_angle')
+        # self.ultrasonic_right_params = GPIO.GPIO_SETTING.getSensorParams('ultrasonic_right')
+        self.ultrasonic_left_params = GPIO.GPIO_SETTING.getSensorParams('ultrasonic_left')
         print("GPIO SETTING COMPLETE __Control.py")
 
         self.force_params = ADC.ADC_SETTING.getSensorParams('force')
         self.potentiometer_params = ADC.ADC_SETTING.getSensorParams('potentiometer')
         print("ADS SETTING COMPLETE __Control.py")
 
-        self.ultrasonic_right = UltrasonicSensor(self.ultrasonic_right_params)
-        # self.ultrasonic_left = UltrasonicSensor(self.ultrasonic_left_params)
-        self.actuator_right_height = ActuatorController(self.actuator_right_height_params)
-        # self.actuator_left_height = ActuatorController(self.actuator_left_height_params)
-        self.actuator_right_angle = ActuatorController(self.actuator_right_angle_params)
-        # self.actuator_left_angle = ActuatorController(self.actuator_left_angle_params)
+        # self.ultrasonic_right = UltrasonicSensor(self.ultrasonic_right_params)
+        self.ultrasonic_left = UltrasonicSensor(self.ultrasonic_left_params)
+        # self.actuator_right_height = ActuatorController(self.actuator_right_height_params)
+        self.actuator_left_height = ActuatorController(self.actuator_left_height_params)
+        # self.actuator_right_angle = ActuatorController(self.actuator_right_angle_params)
+        self.actuator_left_angle = ActuatorController(self.actuator_left_angle_params)
         self.force = ForceSensor(self.force_params)
         # time.sleep(3)
         self.potentiometer = Potentiometer(self.potentiometer_params)
@@ -35,10 +35,10 @@ class Control:
         self.distance_threshold = 1 # cm
         self.angle_threshold = 1 # degree
         self.total_control_falg = True
-        self.right_height_control_flag = True
-        # self.left_height_control_flag = True
-        self.right_angle_control_flag = True
-        # self.left_angle_control_flag = True
+        # self.right_height_control_flag = True
+        self.left_height_control_flag = True
+        # self.right_angle_control_flag = True
+        self.left_angle_control_flag = True
         print("POSITION CONTROL SETTING COMPLETE __Control.py")
 
     # def get_value(self):
@@ -49,27 +49,27 @@ class Control:
 
     # 앱으로 조작, main에서 while 추가적으로 사용할 필요 없음 
     def position_control(self, ref_value):
-        ref_right_distance = ref_value.right_height # cm
-        ref_right_angle = ref_value.right_angle # degree
+        ref_left_distance = ref_value.left_height # cm
+        ref_left_angle = ref_value.left_angle # degree
 
         try:
             while self.total_control_falg:
                 try:
-                    if self.right_height_control_flag:
-                        meas_right_distance = self.ultrasonic_right.get_distance() # cm
-                        right_distance_err = ref_right_distance - meas_right_distance
-                        print("right_distance_err : %f" %right_distance_err, " __Control.py")
+                    if self.left_height_control_flag:
+                        meas_left_distance = self.ultrasonic_left.get_distance() # cm
+                        left_distance_err = ref_left_distance - meas_left_distance
+                        print("left_distance_err : %f" %left_distance_err, " __Control.py")
 
-                        if abs(right_distance_err) < self.distance_threshold:
-                            self.actuator_right_height.stop_actuator()
-                            self.right_height_control_flag = False
+                        if abs(left_distance_err) < self.distance_threshold:
+                            self.actuator_left_height.stop_actuator()
+                            self.left_height_control_flag = False
                         else:
-                            if right_distance_err > 0:
-                                self.actuator_right_height.extend_actuator()
-                            elif right_distance_err < 0:
-                                self.actuator_right_height.retract_actuator()
+                            if left_distance_err > 0:
+                                self.actuator_left_height.extend_actuator()
+                            elif left_distance_err < 0:
+                                self.actuator_left_height.retract_actuator()
 
-                    meas_left_angle, meas_right_angle = self.potentiometer.get_angle()
+                    meas_left_angle, meas_left_angle = self.potentiometer.get_angle()
 
                     if self.right_angle_control_flag:
                         right_angle_err = ref_right_angle - meas_right_angle # degree

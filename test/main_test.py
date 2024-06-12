@@ -5,10 +5,10 @@ from Control import Control
 
 class SIGNAL:
     def __init__(self):
-        self.right_height = 10 # cm
-        # self.ref_left_distance = 0 # cm
-        self.right_angle = 10 # degree
-        # self.ref_left_angle = 0 # degree
+        # self.right_height = 10 # cm
+        self.ref_left_distance = 0 # cm
+        # self.right_angle = 10 # degree
+        self.ref_left_angle = 0 # degree
 
 class FOOTREEDOM:
     def __init__(self):
