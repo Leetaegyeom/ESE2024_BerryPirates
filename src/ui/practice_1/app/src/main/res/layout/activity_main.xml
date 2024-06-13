@@ -13,7 +13,7 @@
         android:layout_height="80dp"
         android:layout_gravity="start|top"
         android:padding="16dp"
-        android:src="@drawable/bluetooth_connection_detected_btn"
+        android:src="@drawable/bluetooth_connection_detected_black_btn"
         android:visibility="gone" />
 
     <LinearLayout

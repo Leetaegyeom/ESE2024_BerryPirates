@@ -4,8 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 class ProfileSelectionActivity : AppCompatActivity() {
 
     private lateinit var profileListView: ListView
-    private lateinit var addProfileButton: Button
-    private lateinit var profileNameEditText: EditText
+    private lateinit var addProfileButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,23 +20,12 @@ class ProfileSelectionActivity : AppCompatActivity() {
 
         profileListView = findViewById(R.id.profileListView)
         addProfileButton = findViewById(R.id.addProfileButton)
-        profileNameEditText = findViewById(R.id.profileNameEditText)
 
         loadProfiles()
 
         addProfileButton.setOnClickListener {
-            val profileName = profileNameEditText.text.toString()
-            if (profileName.isNotEmpty()) {
-                if (isProfileNameDuplicate(profileName)) {
-                    Toast.makeText(this, "프로필 이름이 중복되었습니다", Toast.LENGTH_SHORT).show()
-                } else {
-                    saveProfile(profileName)
-                    loadProfiles()
-                    profileNameEditText.text.clear()
-                }
-            } else {
-                Toast.makeText(this, "프로필 이름을 입력하세요", Toast.LENGTH_SHORT).show()
-            }
+            val intent = Intent(this, ProfileAddActivity::class.java)
+            startActivityForResult(intent, 1)
         }
 
         profileListView.setOnItemClickListener { parent, view, position, id ->
@@ -50,8 +37,6 @@ class ProfileSelectionActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-
     }
 
     private fun loadProfiles() {
@@ -61,17 +46,10 @@ class ProfileSelectionActivity : AppCompatActivity() {
         profileListView.adapter = adapter
     }
 
-    private fun saveProfile(profileName: String) {
-        val sharedPrefs = getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
-        val profiles = sharedPrefs.getStringSet("PROFILES", mutableSetOf())!!.toMutableSet()
-        profiles.add(profileName)
-        sharedPrefs.edit().putStringSet("PROFILES", profiles).apply()
-    }
-
-    // 프로필 중복 걸러내는 함수
-    private fun isProfileNameDuplicate(profileName: String): Boolean {
-        val sharedPrefs = getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
-        val profiles = sharedPrefs.getStringSet("PROFILES", setOf())!!
-        return profiles.contains(profileName)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            loadProfiles()
+        }
     }
 }

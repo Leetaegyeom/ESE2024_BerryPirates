@@ -58,6 +58,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".FootControlActivity" />
+        <activity android:name=".ProfileAddActivity" />
+
     </application>
 
 </manifest>
