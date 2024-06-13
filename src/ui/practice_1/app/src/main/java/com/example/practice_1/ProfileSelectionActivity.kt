@@ -42,7 +42,7 @@ class ProfileSelectionActivity : AppCompatActivity() {
     private fun loadProfiles() {
         val sharedPrefs = getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
         val profiles = sharedPrefs.getStringSet("PROFILES", setOf())!!.toList()
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, profiles)
+        val adapter = ArrayAdapter(this, R.layout.simple_list_item_1_black, profiles)
         profileListView.adapter = adapter
     }
 

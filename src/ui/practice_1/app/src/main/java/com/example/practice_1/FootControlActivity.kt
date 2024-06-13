@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,11 @@ class FootControlActivity : AppCompatActivity() {
     private var footControlCharacteristic: BluetoothGattCharacteristic? = null
     private var mainSignalCharacteristic: BluetoothGattCharacteristic? = null
     private var recordCharacteristic: BluetoothGattCharacteristic? = null
+    private lateinit var bluetoothStatusImageView: ImageView
+
+    private lateinit var angleLockTextView: TextView
+    private lateinit var heightLockTextView: TextView
+
 
     private val UART_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     private val FOOT_CONTROL_CHARACTERISTIC_UUID = UUID.fromString("6e400003-b5a3-f393-e0a9-e50e24dcca9e")
@@ -38,6 +45,7 @@ class FootControlActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.foot_control)
+        bluetoothStatusImageView = findViewById(R.id.bluetoothStatusImageView)
 
         initializeUIElements()
 
@@ -76,17 +84,22 @@ class FootControlActivity : AppCompatActivity() {
         val angleLockButton: ImageButton = findViewById(R.id.angle_lock_button)
         angleLockButton.setOnClickListener {
             toggleFootControlCharacteristic(0)
+            toggleAngleLockTextView()
         }
 
         val heightLockButton: ImageButton = findViewById(R.id.height_lock_button)
         heightLockButton.setOnClickListener {
             toggleFootControlCharacteristic(1)
+            toggleHeightLockTextView()
         }
 
         val savePoseButton: ImageButton = findViewById(R.id.save_pose_button)
         savePoseButton.setOnClickListener {
             showSaveDialog()
         }
+
+        angleLockTextView = findViewById(R.id.angle_lock_text)
+        heightLockTextView = findViewById(R.id.height_lock_text)
     }
 
     private fun showSaveDialog() {
@@ -125,6 +138,23 @@ class FootControlActivity : AppCompatActivity() {
         footControlCharacteristic!!.value = controlValues
         bluetoothGatt!!.writeCharacteristic(footControlCharacteristic)
     }
+
+    private fun toggleAngleLockTextView() {
+        if (angleLockTextView.text == "각도 고정") {
+            angleLockTextView.text = "각도 조절"
+        } else {
+            angleLockTextView.text = "각도 고정"
+        }
+    }
+
+    private fun toggleHeightLockTextView() {
+        if (heightLockTextView.text == "높이 고정") {
+            heightLockTextView.text = "높이 조절"
+        } else {
+            heightLockTextView.text = "높이 고정"
+        }
+    }
+
 
     private fun updateFootControlCharacteristic(index: Int, value: Boolean) {
         if (bluetoothGatt == null || footControlCharacteristic == null) {
@@ -180,10 +210,13 @@ class FootControlActivity : AppCompatActivity() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             super.onConnectionStateChange(gatt, status, newState)
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                runOnUiThread { Toast.makeText(this@FootControlActivity, "연결되었습니다", Toast.LENGTH_SHORT).show() }
+//                runOnUiThread { Toast.makeText(this@FootControlActivity, "연결되었습니다", Toast.LENGTH_SHORT).show() }
+                bluetoothStatusImageView.visibility = ImageView.VISIBLE
                 gatt.discoverServices()
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                runOnUiThread { Toast.makeText(this@FootControlActivity, "연결이 끊어졌습니다", Toast.LENGTH_SHORT).show() }
+//                runOnUiThread { Toast.makeText(this@FootControlActivity, "연결이 끊어졌습니다", Toast.LENGTH_SHORT).show() }
+                bluetoothStatusImageView.visibility = ImageView.GONE
+
             }
         }
 

@@ -1,147 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical"
     android:background="#FFFFE0">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="편안한 자세로\n 발 받침대를 조절하세요"
-        android:textColor="#FF000000"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:fontFamily="@font/notosanskr_medium"/>
+
+    <ImageView
+        android:id="@+id/bluetoothStatusImageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="start|top"
+        android:padding="16dp"
+        android:src="@drawable/bluetooth_connection_detected_black_btn"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
-        <ImageButton
-            android:id="@+id/height_lock_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:background="@drawable/height_btn" />
-
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="높이 고정"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="편안한 자세로\n 발 받침대를 조절하세요"
             android:textColor="#FF000000"
-            android:fontFamily="@font/notosanskr_regular"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <ImageButton
-            android:id="@+id/angle_lock_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:background="@drawable/angle_btn" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="각도 고정"
             android:gravity="center"
-            android:textColor="#FF000000"
-            android:fontFamily="@font/notosanskr_regular"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
-        <ImageButton
-            android:id="@+id/save_pose_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:background="@drawable/save_btn" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="자세 저장하기"
-            android:gravity="center"
-            android:textColor="#FF000000"
-            android:fontFamily="@font/notosanskr_regular"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:gravity="center">
+            android:textSize="30dp"
+            android:fontFamily="@font/notosanskr_medium"/>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1">
-
+            android:gravity="center">
             <ImageButton
-                android:id="@+id/home_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/home_btn"/>
+                android:id="@+id/height_lock_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:background="@drawable/height_btn" />
 
             <TextView
+                android:id="@+id/height_lock_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="홈"
+                android:text="높이 고정"
+                android:gravity="center"
+                android:textColor="#FF000000"
+                android:fontFamily="@font/notosanskr_regular"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/angle_lock_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:background="@drawable/angle_btn" />
+
+            <TextView
+                android:id="@+id/angle_lock_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="각도 고정"
                 android:gravity="center"
                 android:textColor="#FF000000"
                 android:fontFamily="@font/notosanskr_regular"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1">
-
+            android:gravity="center">
             <ImageButton
-                android:id="@+id/record_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/record_btn"/>
+                android:id="@+id/save_pose_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:background="@drawable/save_btn" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="기록"
+                android:text="자세 저장하기"
                 android:gravity="center"
                 android:textColor="#FF000000"
                 android:fontFamily="@font/notosanskr_regular"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/home_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/home_btn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="홈"
+                    android:gravity="center"
+                    android:textColor="#FF000000"
+                    android:fontFamily="@font/notosanskr_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/record_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/record_btn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="기록"
+                    android:gravity="center"
+                    android:textColor="#FF000000"
+                    android:fontFamily="@font/notosanskr_regular"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
     </LinearLayout>
-
-
-</LinearLayout>
+</FrameLayout>

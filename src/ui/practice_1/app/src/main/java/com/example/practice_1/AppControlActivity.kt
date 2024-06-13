@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +34,8 @@ class AppControlActivity : AppCompatActivity() {
     private var bluetoothGatt: BluetoothGatt? = null
     private var appControlCharacteristic: BluetoothGattCharacteristic? = null
     private var mainSignalCharacteristic: BluetoothGattCharacteristic? = null
+    private lateinit var bluetoothStatusImageView: ImageView
+
 
     private val UART_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     private val APP_CONTROL_CHARACTERISTIC_UUID = UUID.fromString("6e400004-b5a3-f393-e0a9-e50e24dcca9e")
@@ -46,6 +49,7 @@ class AppControlActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_control)
+        bluetoothStatusImageView = findViewById(R.id.bluetoothStatusImageView)
 
         bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
         profileName = sharedPrefs.getString("SELECTED_PROFILE", "default") ?: "default"
@@ -338,10 +342,12 @@ class AppControlActivity : AppCompatActivity() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             super.onConnectionStateChange(gatt, status, newState)
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                runOnUiThread { Toast.makeText(this@AppControlActivity, "연결되었습니다", Toast.LENGTH_SHORT).show() }
+//                runOnUiThread { Toast.makeText(this@AppControlActivity, "연결되었습니다", Toast.LENGTH_SHORT).show() }
+                bluetoothStatusImageView.visibility = ImageView.VISIBLE
                 gatt.discoverServices()
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                runOnUiThread { Toast.makeText(this@AppControlActivity, "연결이 끊어졌습니다", Toast.LENGTH_SHORT).show() }
+                bluetoothStatusImageView.visibility = ImageView.GONE
+
             }
         }
 

@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private var bluetoothGatt: BluetoothGatt? = null
     private var mainSignalCharacteristic: BluetoothGattCharacteristic? = null
     private lateinit var bluetoothStatusImageView: ImageView
+    private lateinit var profileNameTextView: TextView
 
     private val UART_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     private val SIGNAL_CHARACTERISTIC_UUID = UUID.fromString("6e400002-b5a3-f393-e0a9-e50e24dcca9e")
@@ -36,10 +37,19 @@ class MainActivity : AppCompatActivity() {
         bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
 
         bluetoothStatusImageView = findViewById(R.id.bluetoothStatusImageView)
+        val profileNameTextView: TextView = findViewById(R.id.profileNameTextView)
+
         val welcomeTextView: TextView = findViewById(R.id.welcomeTextView)
         val profileName = sharedPrefs.getString("SELECTED_PROFILE", null)
+        profileNameTextView.text = "$profileName"
         if (profileName != null) {
             welcomeTextView.text = "$profileName 님, 편안한 자세로 발 받침대를 사용하세요"
+        }
+
+        val profileImageButton: ImageButton = findViewById(R.id.profileImageButton)
+        profileImageButton.setOnClickListener{
+            val intent = Intent(this@MainActivity, ProfileSelectionActivity::class.java)
+            startActivity(intent)
         }
 
         val power_off_button: ImageButton = findViewById(R.id.power_off_button)
