@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.practice_1.BluetoothLeService.Companion.SIGNAL_CHARACTERISTIC_UUID
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.firestore.ktx.firestore
+import java.nio.ByteBuffer
 import java.util.*
 
 class FootControlActivity : AppCompatActivity() {
@@ -201,13 +202,20 @@ class FootControlActivity : AppCompatActivity() {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (characteristic.uuid == RECORD_CHARACTERISTIC_UUID) {
                     val values = characteristic.value
-                    val leftAngle = values[0].toFloat()
-                    val leftHeight = values[1].toFloat()
-                    val rightAngle = values[2].toFloat()
-                    val rightHeight = values[3].toFloat()
+                    if (values.size >= 16) { // float 값 4개 (각 4바이트씩) 이므로 최소 16바이트가 필요함
+                        val buffer = ByteBuffer.wrap(values)
+                        val leftAngle = buffer.float
+                        val leftHeight = buffer.float
+                        val rightAngle = buffer.float
+                        val rightHeight = buffer.float
 
-                    poseName?.let {
-                        savePoseToFirestore(leftAngle, leftHeight, rightAngle, rightHeight, it)
+                        poseName?.let {
+                            savePoseToFirestore(leftAngle, leftHeight, rightAngle, rightHeight, it)
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(this@FootControlActivity, "자세 데이터가 손상되었습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             } else {
@@ -216,6 +224,7 @@ class FootControlActivity : AppCompatActivity() {
                 }
             }
         }
+
 
         override fun onCharacteristicWrite(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
             super.onCharacteristicWrite(gatt, characteristic, status)

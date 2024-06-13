@@ -52,10 +52,10 @@ class RecordAdapter(
 
         fun bind(record: Record) {
             documentNameTextView.text = record.documentName
-            leftHeightTextView.text = "${record.leftHeight}"
-            leftAngleTextView.text = "${record.leftAngle}"
-            rightHeightTextView.text = "${record.rightHeight}"
-            rightAngleTextView.text = "${record.rightAngle}"
+            leftHeightTextView.text = "${record.leftHeight}단계"
+            leftAngleTextView.text = "${record.leftAngle}단계"
+            rightHeightTextView.text = "${record.rightHeight}단계"
+            rightAngleTextView.text = "${record.rightAngle}단계"
 
             itemView.setOnClickListener {
                 onRecordClick(record)

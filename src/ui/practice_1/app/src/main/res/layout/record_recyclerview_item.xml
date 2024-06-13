@@ -35,29 +35,60 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="15dp">
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3">
+                android:layout_weight="1">
                 <TextView
-                    android:id="@+id/leftFootTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="왼발"
                     android:textSize="18sp"
-                    android:gravity="start"
                     android:textColor="#FF000000"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2">
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/leftFootTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="왼발"
+                    android:textSize="18sp"
+                    android:textColor="#FF000000"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+            <TextView
+                android:id="@+id/rightFootTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="오른발"
+                android:textSize="18sp"
+                android:singleLine="true"
+                android:textColor="#FF000000"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="15dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
                 <TextView
                     android:id="@+id/leftFootHeightTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="높이:"
+                    android:text="높이"
                     android:textSize="18sp"
                     android:gravity="start"
                     android:textColor="#FF000000"/>
@@ -75,15 +106,36 @@
                     android:textColor="#FF000000"/>
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2">
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/rightHeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#FF000000"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="15dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
                 <TextView
                     android:id="@+id/leftFootAngleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="각도:"
+                    android:text="각도"
                     android:textSize="18sp"
                     android:textColor="#FF000000"/>
 
@@ -100,67 +152,6 @@
                     android:textSize="18sp"
                     android:textColor="#FF000000"/>
             </LinearLayout>
-        </LinearLayout>
-
-        <!-- 오른발 정보 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3">
-                <TextView
-                    android:id="@+id/rightFootTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="오른발"
-                    android:textSize="18sp"
-                    android:singleLine="true"
-                    android:textColor="#FF000000"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2">
-                <TextView
-                    android:id="@+id/rightFootHeightTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="높이:"
-                    android:textSize="18sp"
-                    android:textColor="#FF000000"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-                <TextView
-                    android:id="@+id/rightHeightTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textColor="#FF000000"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2">
-                <TextView
-                    android:id="@+id/rightFootAngleTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="각도:"
-                    android:textSize="18sp"
-                    android:gravity="start"
-                    android:textColor="#FF000000"/>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -174,5 +165,8 @@
                     android:textColor="#FF000000"/>
             </LinearLayout>
         </LinearLayout>
+
+
+
     </LinearLayout>
 </LinearLayout>
