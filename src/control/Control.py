@@ -45,6 +45,8 @@ class Control:
         self.left_height_control_flag = True
         self.right_angle_control_flag = True
         self.left_angle_control_flag = True
+        self.MIN_HEIGHT = 9.5
+        self.MAX_HEIGHT = 22
         print("POSITION CONTROL SETTING COMPLETE __Control.py")
 
     def get_value(self):
@@ -139,21 +141,28 @@ class Control:
     def foot_control(self, fix_angular = False, fix_height = False):
         right, left = self.force.guess_user_purpose()
         
+        current_value = self.get_value()
+        current_left_height, current_right_height = current_value[1], current_value[3]
+
         if right == "FRONT BACK UP" and not(fix_height):
-            self.actuator_right_height.extend_actuator(self.min_speed)
+            if current_right_height > self.MIN_HEIGHT:
+                self.actuator_right_height.extend_actuator(self.min_speed)
         elif right == "FRONT DOWN" and not(fix_angular):
             self.actuator_right_angle.extend_actuator(self.max_speed)
         elif right == "FRONT BACK DOWN" and not(fix_height):
-            self.actuator_right_height.retract_actuator(self.min_speed)
+            if current_right_height < self.MAX_HEIGHT:
+                self.actuator_right_height.retract_actuator(self.min_speed)
         elif right == "BACK DOWN" and not(fix_angular):
             self.actuator_right_angle.retract_actuator(self.max_speed)
         
         if left == "FRONT BACK UP" and not(fix_height):
-            self.actuator_left_height.retract_actuator(self.min_speed)
+            if current_left_height > self.MIN_HEIGHT:
+                self.actuator_left_height.retract_actuator(self.min_speed)
         elif left == "FRONT DOWN" and not(fix_angular):
             self.actuator_left_angle.extend_actuator(self.max_speed)
         elif left == "FRONT BACK DOWN" and not(fix_height):
-            self.actuator_left_height.extend_actuator(self.min_speed)
+            if current_left_height < self.MAX_HEIGHT:
+                self.actuator_left_height.extend_actuator(self.min_speed)
         elif left == "BACK DOWN" and not(fix_angular):
             self.actuator_left_angle.retract_actuator(self.max_speed)
 
