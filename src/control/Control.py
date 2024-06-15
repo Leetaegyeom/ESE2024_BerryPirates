@@ -35,8 +35,8 @@ class Control:
         self.potentiometer = Potentiometer(self.potentiometer_params)
         print("SENSOR & ACTUATOR SETTING COMPLETE __Control.py")
 
-        self.distance_threshold = 1 # cm
-        self.angle_threshold = 1 # degree
+        self.distance_threshold = 0.5 # cm
+        self.angle_threshold = 0.5 # degree
         self.max_speed = 100
         self.mid_speed = 60
         self.min_speed = 20
@@ -79,9 +79,9 @@ class Control:
                         self.right_height_control_flag = False
                     else:
                         if right_distance_err > 0:
-                            self.actuator_right_height.retract_actuator(self.mid_speed)
+                            self.actuator_right_height.retract_actuator(self.min_speed)
                         elif right_distance_err < 0:
-                            self.actuator_right_height.extend_actuator(self.mid_speed)
+                            self.actuator_right_height.extend_actuator(self.min_speed)
 
                 if self.left_height_control_flag:
                     meas_left_distance = self.ultrasonic_left.get_distance() # cm
@@ -112,7 +112,6 @@ class Control:
                         elif right_angle_err < 0:
                             self.actuator_right_angle.retract_actuator(self.max_speed)
 
-
                 if self.left_angle_control_flag:
                     left_angle_err = ref_left_angle - meas_left_angle # degree
                     print("left_angle_err  : {:8.4f} __Control.py".format(left_angle_err))
@@ -131,7 +130,7 @@ class Control:
                     self.stop_all_actuator()
                     print("POSITION CONTROL COMPLETE __Control.py")
 
-                time.sleep(0.1)
+                time.sleep(0.01)
 
         except KeyboardInterrupt:
             print("KEYBOARD INTERRUPT __Control.py")
@@ -143,25 +142,25 @@ class Control:
         
         current_value = self.get_value()
         current_left_height, current_right_height = current_value[1], current_value[3]
-
+        
         if right == "FRONT BACK UP" and not(fix_height):
-            if current_right_height > self.MIN_HEIGHT:
-                self.actuator_right_height.extend_actuator(self.min_speed)
+            if current_right_height < self.MAX_HEIGHT:
+                self.actuator_right_height.retract_actuator(self.min_speed)
         elif right == "FRONT DOWN" and not(fix_angular):
             self.actuator_right_angle.extend_actuator(self.max_speed)
         elif right == "FRONT BACK DOWN" and not(fix_height):
-            if current_right_height < self.MAX_HEIGHT:
-                self.actuator_right_height.retract_actuator(self.min_speed)
+            if current_right_height > self.MIN_HEIGHT:
+                self.actuator_right_height.extend_actuator(self.min_speed)
         elif right == "BACK DOWN" and not(fix_angular):
             self.actuator_right_angle.retract_actuator(self.max_speed)
         
         if left == "FRONT BACK UP" and not(fix_height):
-            if current_left_height > self.MIN_HEIGHT:
+            if current_left_height < self.MAX_HEIGHT:
                 self.actuator_left_height.retract_actuator(self.min_speed)
         elif left == "FRONT DOWN" and not(fix_angular):
             self.actuator_left_angle.extend_actuator(self.max_speed)
         elif left == "FRONT BACK DOWN" and not(fix_height):
-            if current_left_height < self.MAX_HEIGHT:
+            if current_left_height > self.MIN_HEIGHT:
                 self.actuator_left_height.extend_actuator(self.min_speed)
         elif left == "BACK DOWN" and not(fix_angular):
             self.actuator_left_angle.retract_actuator(self.max_speed)

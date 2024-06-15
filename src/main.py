@@ -21,6 +21,7 @@ class FOOTREEDOM:
         self.bluetooth.app_control_characteristic.done = False
 
         if main_signal.app_control_on and not(main_signal.foot_control_on): # app control mode
+            time.sleep(1)
             print("APP CONTROL MODE ON !!")
             ref_value = self.bluetooth.get_ref_value()
             self.value_converter(ref_value, "step_to_value")
@@ -40,19 +41,18 @@ class FOOTREEDOM:
                     save_pose = self.control.get_value()
                     save_pose = self.value_converter(save_pose, "value_to_step")
                     self.bluetooth.send_save_pose(save_pose)
+                    self.bluetooth.foot_control_signal_characteristic.value[2] = False
 
     def value_converter(sef, value, type):
         if type == "value_to_step":
-            value.left_height = (value.left_height - OFFSET) / RATIO
-            value.left_angle = (value.left_angle - OFFSET) / RATIO
-            value.right_height = (value.right_height - OFFSET) / RATIO
-            value.right_angle = (value.right_angle - OFFSET) / RATIO
+            value[1] = (value[1] - OFFSET) / RATIO
+            value[3] = (value[3] - OFFSET) / RATIO
+            value[0] = value[0] / 4
+            value[2] = value[2] / 4
         
         elif type == "step_to_value":
             value.left_height = value.left_height * RATIO + OFFSET
-            value.left_angle = value.left_angle * RATIO + OFFSET
             value.right_height = value.right_height * RATIO + OFFSET
-            value.right_angle = value.right_angle * RATIO + OFFSET
         
         return value
 
