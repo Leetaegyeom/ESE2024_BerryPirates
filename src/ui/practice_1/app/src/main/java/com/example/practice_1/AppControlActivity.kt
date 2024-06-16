@@ -61,11 +61,12 @@ class AppControlActivity : AppCompatActivity() {
         if (deviceAddress != null) {
             val device = bluetoothAdapter.getRemoteDevice(deviceAddress)
             bluetoothGatt = device.connectGatt(this, false, gattCallback)
-        } else {
-            // 저장된 디바이스 주소가 없으면 ScanActivity로 이동
-            val intent = Intent(this@AppControlActivity, ScanActivity::class.java)
-            startActivity(intent)
         }
+//        else {
+//            // 저장된 디바이스 주소가 없으면 ScanActivity로 이동
+//            val intent = Intent(this@AppControlActivity, ScanActivity::class.java)
+//            startActivity(intent)
+//        }
 
         // 버튼 클릭 이벤트 초기화
         initializeButtonClickEvents()

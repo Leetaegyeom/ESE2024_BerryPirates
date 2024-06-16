@@ -93,11 +93,12 @@ class MainActivity : AppCompatActivity() {
         if (deviceAddress != null) {
             val device = bluetoothAdapter.getRemoteDevice(deviceAddress)
             bluetoothGatt = device.connectGatt(this, false, gattCallback)
-        } else {
-            // 저장된 디바이스 주소가 없으면 ScanActivity로 이동
-            val intent = Intent(this@MainActivity, ScanActivity::class.java)
-            startActivity(intent)
         }
+//        else {
+//            // 저장된 디바이스 주소가 없으면 ScanActivity로 이동
+//            val intent = Intent(this@MainActivity, MainActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 
     private fun updateMainSignalCharacteristic(index: Int, value: Boolean) {

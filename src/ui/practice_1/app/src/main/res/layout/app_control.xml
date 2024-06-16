@@ -20,15 +20,25 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal">
-
-        <!-- 왼발 -->
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:gravity="center_horizontal">
-        </LinearLayout>
+            android:layout_height="70dp"
+            android:text="앱으로 조절 모드"
+            android:textColor="#FF000000"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:fontFamily="@font/notosanskr_medium"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/app_control_new_2_btn"/>
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/gradient"
+            android:layout_marginTop="10dp"/>
 
         <GridLayout
             android:layout_width="wrap_content"
@@ -45,7 +55,7 @@
                 android:layout_column="1"
                 android:layout_columnSpan="2"
                 android:layout_gravity="center"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/notosanskr_medium"/>
 
@@ -57,7 +67,7 @@
                 android:text="오른발"
                 android:layout_columnSpan="2"
                 android:layout_gravity="center"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/notosanskr_medium"/>
             <TextView
@@ -68,7 +78,7 @@
                 android:text="높이"
                 android:layout_rowSpan="2"
                 android:layout_gravity="center"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 android:fontFamily="@font/notosanskr_medium"/>
 
             <TextView
@@ -81,7 +91,7 @@
                 android:textColor="#FF000000"
                 android:text="0"
                 android:layout_gravity="center"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 android:fontFamily="@font/notosanskr_medium"/>
             <TextView
                 android:id="@+id/rightHeightTextView"
@@ -91,32 +101,32 @@
                 android:textColor="#FF000000"
                 android:text="0"
                 android:layout_gravity="center"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 android:fontFamily="@font/notosanskr_medium"/>
 
 
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/leftHeightDecreaseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"/>
-            <Button
+                android:text="-"
+                android:textColor="#FF000000"
+                android:background="@drawable/btn_color"/>
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/leftHeightIncreaseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+"/>
+                android:background="@drawable/btn_color"
+                android:text="+"
+                android:textColor="#FF000000"/>
 
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/rightHeightDecreaseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"/>
-            <Button
+                android:text="-"
+                android:textColor="#FF000000"
+                android:background="@drawable/btn_color"/>
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/rightHeightIncreaseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="#FF000000"
+                android:background="@drawable/btn_color"
                 android:text="+"/>
             <TextView
                 android:id="@+id/angleTextView"
@@ -126,7 +136,7 @@
                 android:text="각도"
                 android:layout_rowSpan="2"
                 android:layout_gravity="center"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 android:fontFamily="@font/notosanskr_medium"/>
             <TextView
                 android:id="@+id/leftAngleTextView"
@@ -138,7 +148,7 @@
                 android:layout_gravity="center"
                 android:textColor="#FF000000"
                 android:text="0"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 android:fontFamily="@font/notosanskr_medium"/>
             <TextView
                 android:id="@+id/rightAngleTextView"
@@ -148,34 +158,38 @@
                 android:layout_gravity="center"
                 android:textColor="#FF000000"
                 android:text="0"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 android:fontFamily="@font/notosanskr_medium"/>
 
 
 
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/leftAngleDecreaseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="#FF000000"
+                android:background="@drawable/btn_color"
+                android:layout_marginBottom="5dp"
                 android:text="-"/>
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/leftAngleIncreaseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="#FF000000"
+                android:background="@drawable/btn_color"
+                android:layout_marginBottom="5dp"
                 android:text="+"/>
 
 
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/rightAngleDecreaseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="#FF000000"
+                android:background="@drawable/btn_color"
+                android:layout_marginBottom="5dp"
                 android:text="-"/>
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/rightAngleIncreaseButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="#FF000000"
+                android:background="@drawable/btn_color"
+                android:layout_marginBottom="5dp"
                 android:text="+"/>
 
 
@@ -254,6 +268,13 @@
                     android:fontFamily="@font/notosanskr_regular"/>
             </LinearLayout>
         </LinearLayout>
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/gradient"
+            android:layout_marginBottom="10dp"/>
         <!-- 네비게이션 바 추가 -->
 
         <LinearLayout
@@ -274,7 +295,7 @@
                     android:id="@+id/home_button"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/home_btn"/>
+                    android:background="@drawable/home_full_btn"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -296,7 +317,7 @@
                     android:id="@+id/record_button"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/record_btn"/>
+                    android:background="@drawable/record_new_btn"/>
 
                 <TextView
                     android:layout_width="wrap_content"

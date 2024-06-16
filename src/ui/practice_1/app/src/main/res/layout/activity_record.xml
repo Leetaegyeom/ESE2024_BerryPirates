@@ -21,20 +21,37 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="저장된 자세를 선택하세요"
+            android:layout_height="70dp"
+            android:text="기록"
+            android:textColor="#FF000000"
             android:gravity="center"
-            android:layout_marginTop="30dp"
-            android:textSize="20dp"
-            android:fontFamily="@font/notosanskr_bold"
-            android:textColor="#FF000000"/>
+            android:textSize="30dp"
+            android:fontFamily="@font/notosanskr_medium"/>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/record_new_btn"/>
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/gradient"
+            android:layout_marginTop="10dp"/>
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recordRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
-
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/gradient"
+            android:layout_marginBottom="10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +70,7 @@
                     android:id="@+id/home_button"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/home_btn"/>
+                    android:background="@drawable/home_full_btn"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,7 +92,7 @@
                     android:id="@+id/record_button"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/record_btn"/>
+                    android:background="@drawable/record_new_btn"/>
 
                 <TextView
                     android:layout_width="wrap_content"

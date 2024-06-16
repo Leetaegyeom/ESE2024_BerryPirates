@@ -51,15 +51,21 @@ class RecordAdapter(
         private val rightAngleTextView: TextView = itemView.findViewById(R.id.rightAngleTextView)
 
         fun bind(record: Record) {
+            val leftHeight = if (record.leftHeight < 0) 0 else if (record.leftHeight > 5) 5 else record.leftHeight
+            val leftAngle = if (record.leftAngle < -5) -5 else if (record.leftAngle > 5) 5 else record.leftAngle
+            val rightHeight = if (record.rightHeight < 0) 0 else if (record.rightHeight > 5) 5 else record.rightHeight
+            val rightAngle = if (record.rightAngle < -5) -5 else if (record.rightAngle > 5) 5 else record.rightAngle
+
             documentNameTextView.text = record.documentName
-            leftHeightTextView.text = "${record.leftHeight}단계"
-            leftAngleTextView.text = "${record.leftAngle}단계"
-            rightHeightTextView.text = "${record.rightHeight}단계"
-            rightAngleTextView.text = "${record.rightAngle}단계"
+            leftHeightTextView.text = "${leftHeight}단계"
+            leftAngleTextView.text = "${leftAngle}단계"
+            rightHeightTextView.text = "${rightHeight}단계"
+            rightAngleTextView.text = "${rightAngle}단계"
 
             itemView.setOnClickListener {
                 onRecordClick(record)
             }
         }
+
     }
 }
