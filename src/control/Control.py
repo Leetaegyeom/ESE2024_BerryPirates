@@ -145,23 +145,23 @@ class Control:
         
         if right == "FRONT BACK UP" and not(fix_height):
             if current_right_height < self.MAX_HEIGHT:
-                self.actuator_right_height.retract_actuator(self.min_speed)
+                self.actuator_right_height.retract_actuator(self.max_speed)
         elif right == "FRONT DOWN" and not(fix_angular):
             self.actuator_right_angle.extend_actuator(self.max_speed)
         elif right == "FRONT BACK DOWN" and not(fix_height):
             if current_right_height > self.MIN_HEIGHT:
-                self.actuator_right_height.extend_actuator(self.min_speed)
+                self.actuator_right_height.extend_actuator(self.mid_speed)
         elif right == "BACK DOWN" and not(fix_angular):
             self.actuator_right_angle.retract_actuator(self.max_speed)
         
         if left == "FRONT BACK UP" and not(fix_height):
             if current_left_height < self.MAX_HEIGHT:
-                self.actuator_left_height.retract_actuator(self.min_speed)
+                self.actuator_left_height.retract_actuator(self.max_speed)
         elif left == "FRONT DOWN" and not(fix_angular):
             self.actuator_left_angle.extend_actuator(self.max_speed)
         elif left == "FRONT BACK DOWN" and not(fix_height):
             if current_left_height > self.MIN_HEIGHT:
-                self.actuator_left_height.extend_actuator(self.min_speed)
+                self.actuator_left_height.extend_actuator(self.mid_speed)
         elif left == "BACK DOWN" and not(fix_angular):
             self.actuator_left_angle.retract_actuator(self.max_speed)
 

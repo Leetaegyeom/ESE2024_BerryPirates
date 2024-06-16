@@ -45,14 +45,18 @@ class FOOTREEDOM:
 
     def value_converter(sef, value, type):
         if type == "value_to_step":
-            value[1] = value[1] - OFFSET / RATIO
-            value[3] = value[3] - OFFSET / RATIO
-            value[0] = value[0] / 4
-            value[2] = rvalue[2] / 4
+            value[1] = round((value[1] - OFFSET) / RATIO * 2)
+            value[3] = round((value[3] - OFFSET) / RATIO * 2)
+            value[0] = round(value[0] / 2)
+            value[2] = round(value[2] / 2)
         
         elif type == "step_to_value":
             value.left_height = value.left_height * RATIO + OFFSET
             value.right_height = value.right_height * RATIO + OFFSET
+            if value.left_angle <= 255 and value.left_angle >=251
+                value.left_angle
+            value.left_angle = value.left_angle * 4
+            value.right_angle = value.right_angle *4
         
         return value
 

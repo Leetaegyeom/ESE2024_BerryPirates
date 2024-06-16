@@ -20,6 +20,9 @@ f = ADS.toVoltage()
 while True :
     # 0 -> left, 1 -> right
     val_1 = ADS.readADC(1)
+    angle = (val_1*f - 1.63) * 300/4.096
 
-    print("Analog1: {0:d}\t{1:.3f} V".format(val_1, val_1 * f))
+    # print("Analog1: {0:d}\t{1:.3f} V".format(val_1, val_1 * f))
+    print(angle)
+    time.sleep(0.1)
 

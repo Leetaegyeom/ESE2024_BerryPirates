@@ -15,7 +15,7 @@ class Potentiometer:
         self.MAX_VALUE = 4.096
         self.RATIO = self.MAX_ANGLE/self.MAX_VALUE
 
-        self.RIGHT_OFFSET = 1.605
+        self.RIGHT_OFFSET = 1.63
         self.LEFT_OFFSET = 1.128
         self.f = self.ADS.toVoltage()
 
