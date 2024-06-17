@@ -4,7 +4,9 @@ sys.path.append('./control')
 
 from Control import Control
 from Bluetooth import Bluetooth
+
 import time
+import os
 
 RATIO = 12.5/5
 OFFSET = 9.5
@@ -16,9 +18,13 @@ class FOOTREEDOM:
         self.bluetooth = Bluetooth()
         print("BLUETOOTH SETTING COMPLETE __main.py")
 
+    # MAIN CODE 
     def run(self):
         main_signal = self.bluetooth.get_main_signal()
         self.bluetooth.app_control_characteristic.done = False
+
+        if main_signal.power_off == True:
+            os.system("sudo shutdown -h now")
 
         if main_signal.app_control_on and not(main_signal.foot_control_on): # app control mode
             time.sleep(1)
@@ -32,34 +38,40 @@ class FOOTREEDOM:
 
         elif not(main_signal.app_control_on) and main_signal.foot_control_on: # foot control mode
             while True:
-                main_signal = self.bluetooth.get_main_signal()
-                if not(main_signal.foot_control_on):
-                    break
-                foot_control_signal = self.bluetooth.get_foot_control_signal()
-                self.control.foot_control(fix_angular = foot_control_signal.fix_angular, fix_height = foot_control_signal.fix_height)
-                if foot_control_signal.save_pose:
-                    save_pose = self.control.get_value()
-                    save_pose = self.value_converter(save_pose, "value_to_step")
-                    self.bluetooth.send_save_pose(save_pose)
-                    self.bluetooth.foot_control_signal_characteristic.value[2] = False
+                try:
+                    main_signal = self.bluetooth.get_main_signal()
+                    if not(main_signal.foot_control_on):
+                        break
+                    foot_control_signal = self.bluetooth.get_foot_control_signal()
+                    self.control.foot_control(fix_angular = foot_control_signal.fix_angular, fix_height = foot_control_signal.fix_height)
+                    if foot_control_signal.save_pose:
+                        save_pose = self.control.get_value()
+                        save_pose = self.value_converter(save_pose, "value_to_step")
+                        self.bluetooth.send_save_pose(save_pose)
+                        self.bluetooth.foot_control_signal_characteristic.value[2] = False
+                except OSError:
+                    pass
 
     def value_converter(sef, value, type):
         if type == "value_to_step":
             value[1] = value[1] - OFFSET / RATIO
             value[3] = value[3] - OFFSET / RATIO
             value[0] = value[0] / 4
-            value[2] = rvalue[2] / 4
+            value[2] = value[2] / 4
         
         elif type == "step_to_value":
             value.left_height = value.left_height * RATIO + OFFSET
             value.right_height = value.right_height * RATIO + OFFSET
         
         return value
-
+    
 if __name__ == "__main__":
     footreedom = FOOTREEDOM()
     try:
         while True:
-            footreedom.run()
+            try:
+                footreedom.run()
+            except OSError:
+                pass
     except KeyboardInterrupt:
         footreedom.control.cleanup_all_actuator()
