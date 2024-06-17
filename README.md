@@ -22,6 +22,7 @@
 * 전  원 : 시스템 통합
 
 ## Main File Structure
++ modeling_Inventor : modeling files with Inventor
 + test
   * Actuator : linear actuator test
   * Sensor : force sensor, potentiometer, ultrasonic sensor test
@@ -29,10 +30,10 @@
 + src
   * communication : bluetooth (with BLE)
   * control
-+ ui
-  * practice_1/app/src/main/java/com/example/practice_1 : UI backend file
-  * practice_1/app/src/main/res/layout : UI frontend file
-+ main.py : integrate communication, control, ui files
-+ main_app_control_test.py : app control mode test
-+ main_foot_control_test.py : foot control  mode test
+  * ui
+    - practice_1/app/src/main/java/com/example/practice_1 : UI backend file
+    - practice_1/app/src/main/res/layout : UI frontend file
+  * main.py : integrate communication, control, ui files
+  * main_app_control_test.py : app control mode test
+  * main_foot_control_test.py : foot control  mode test
   
