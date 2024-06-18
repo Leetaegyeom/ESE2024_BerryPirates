@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">practice_1</string>
+    <string name="app_name">자유분발</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_navi">NaviActivity</string>
     <string name="title_activity_record">RecordActivity</string>
     <string name="title_activity_app_control">AppControlActivity</string>
     <string name="title_activity_scan">ScanActivity</string>
+    <string name="delete_profile">프로필 삭제</string>
 </resources>

@@ -3,10 +3,10 @@ package com.example.practice_1
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class ProfileSelectionActivity : AppCompatActivity() {
@@ -28,22 +28,48 @@ class ProfileSelectionActivity : AppCompatActivity() {
             startActivityForResult(intent, 1)
         }
 
-        profileListView.setOnItemClickListener { parent, view, position, id ->
-            val selectedProfile = parent.getItemAtPosition(position).toString()
-            val sharedPrefs = getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
-            sharedPrefs.edit().putString("SELECTED_PROFILE", selectedProfile).apply()
-
-            val intent = Intent(this@ProfileSelectionActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        // profileListView.setOnItemClickListener 제거
     }
 
     private fun loadProfiles() {
         val sharedPrefs = getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
         val profiles = sharedPrefs.getStringSet("PROFILES", setOf())!!.toList()
-        val adapter = ArrayAdapter(this, R.layout.simple_list_item_1_black, profiles)
+        val adapter = ProfileAdapter(this, profiles, { profile ->
+            confirmDeleteProfile(profile)
+        }, { profile ->
+            selectProfile(profile)
+        })
         profileListView.adapter = adapter
+    }
+
+    private fun confirmDeleteProfile(profile: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle("프로필 삭제")
+            setMessage("$profile 을(를) 삭제하시겠습니까?")
+            setPositiveButton("예") { _, _ ->
+                deleteProfile(profile)
+            }
+            setNegativeButton("아니오", null)
+            show()
+        }
+    }
+
+    private fun deleteProfile(profile: String) {
+        val sharedPrefs = getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
+        val profiles = sharedPrefs.getStringSet("PROFILES", mutableSetOf())?.toMutableSet()
+        profiles?.remove(profile)
+        sharedPrefs.edit().putStringSet("PROFILES", profiles).apply()
+        loadProfiles()
+        Toast.makeText(this, "프로필이 삭제되었습니다: $profile", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun selectProfile(profile: String) {
+        val sharedPrefs = getSharedPreferences("BLE_PREFS", Context.MODE_PRIVATE)
+        sharedPrefs.edit().putString("SELECTED_PROFILE", profile).apply()
+
+        val intent = Intent(this@ProfileSelectionActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
