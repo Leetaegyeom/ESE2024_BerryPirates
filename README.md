@@ -48,4 +48,29 @@ FootReeDom은 사용자가 편안하고 건강한 자세를 유지할 수 있도
 ## 발 받침대 하드웨어
 <p align="center"><img src=https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/105715306/b9e93ca8-b057-485a-9558-b9e74c8d6c60)" width="600"><p/>
 
+## 앱 UI
+
+<table>
+  <tr>
+    <th colspan="3" style="text-align: center;">앱 UI</th>
+  </tr>
+  <tr>
+    <td style="text-align: center;"><img src="https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/117874932/820fe9bb-0fb0-438c-aa65-7bf8d4b8bdae" width="200"><br><center>프로필 선택 화면</center></td>
+    <td style="text-align: center;"><img src="https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/117874932/6f7c1de1-9a7c-4feb-bb8f-6e723fd5a1c3" width="200"><br>블루투스 연결 화면</td>
+    <td style="text-align: center;"><img src="https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/117874932/ca94c426-0b0d-4076-83ab-4f130ff811d5" width="200"><br>홈 화면</td>
+  </tr>
+  <tr>
+    <td style="text-align: center;"><img src="https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/117874932/b4910ef9-af30-42c7-9282-75d4f5f5842a" width="200"><br>앱으로 조절 화면</td>
+    <td style="text-align: center;"><img src="https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/117874932/9c248d5d-af56-4d0b-9b9c-af685f4acf17" width="200"><br>발로 조절 화면</td>
+    <td style="text-align: center;"><img src="https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/117874932/846be08f-9a41-4b4d-91f8-d40c5e806145" width="200"><br>기록 화면</td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
 
