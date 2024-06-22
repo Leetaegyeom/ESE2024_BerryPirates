@@ -46,6 +46,6 @@ FootReeDom은 사용자가 편안하고 건강한 자세를 유지할 수 있도
   * **라즈베리파이:** 센서부, 구동부로 구성하였다. 센서부로는 초음파 센서, 압력 센서, 로터리 가변저항이 있으며 압력 센서와 로터리 가변저항은 아날로그 값을 반환하므로 ADC Converter를 통해 디지털 값으로 변환하여 측정값을 읽는다. 초음파 센서의 경우, 디지털 값을 반환하기 때문에 라즈베리파이와 직접 연결하여 사용한다. 구동부인 리니어 액추에이터는 모터 드라이버를 통해 간편하게 제어할 수 있도록 구성하였다.
 
 ## 발 받침대 하드웨어
- <p align="center"><img src="https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/117874932/8a512bd5-2c73-449e-acce-1a8e81acf3f6" width="600"><p/>
+![발 받침대 사진](https://github.com/Leetaegyeom/ESE2024_BerryPirates/assets/105715306/b9e93ca8-b057-485a-9558-b9e74c8d6c60)
 
 
