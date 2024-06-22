@@ -3,6 +3,7 @@
 🦶 FootReeDom(자유분발)
 
 ## 📃 Project Outline
+FootReeDom은 사용자가 편안하고 건강한 자세를 유지할 수 있도록 돕는 발 받침대입니다. 이 프로젝트의 주요 특징은 다음과 같습니다:
 + 프로필 선택 기능 제공
 + 발로 조절 모드
 + 앱으로 조절 모드
@@ -22,18 +23,19 @@
 * 전  원 : 시스템 통합
 
 ## Main File Structure
-+ modeling_Inventor : modeling files with Inventor
++ modeling_Inventor
+  * modeling files with Inventor
 + test
-  * Actuator : linear actuator test
-  * Sensor : force sensor, potentiometer, ultrasonic sensor test
-  * BLE, Control, Main test
+  * Actuator : 리니어 액추에이터 테스트
+  * Sensor : 포스 센서, 포텐셔미터, 초음파 센서 테스트
+  * BLE, Control, Main: BLE 통신, 제어, 메인 시스템 테스트
 + src
-  * communication : bluetooth (with BLE)
-  * control
+  * communication : 블루투스 통신 (BLE 사용)
+  * control: 제어 시스템 파일
   * ui
-    - practice_1/app/src/main/java/com/example/practice_1 : UI backend file
-    - practice_1/app/src/main/res/layout : UI frontend file
-  * main.py : integrate communication, control, ui files
-  * main_app_control_test.py : app control mode test
-  * main_foot_control_test.py : foot control  mode test
+    - practice_1/app/src/main/java/com/example/practice_1 : UI 백엔드 파일
+    - practice_1/app/src/main/res/layout : UI 프론트엔드 파일
+  * main.py : 통신, 제어, UI 파일 통합
+  * main_app_control_test.py : 앱 제어 모드 테스트
+  * main_foot_control_test.py : 발 제어 모드 테스트
   
