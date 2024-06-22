@@ -66,6 +66,10 @@ FootReeDom은 사용자가 편안하고 건강한 자세를 유지할 수 있도
   </tr>
 </table>
 
+## 제작 과정 노션 및 최종 캡스톤 위키 링크
+  * 제작 과정 노션: https://buttered-rainbow-4cd.notion.site/9be590ae76e54a9b8e1b1db27857cb00?pvs=4
+  * 최종 캡스톤 위키: https://capstone.uos.ac.kr/mie/index.php/%EB%B2%A0%EB%A6%AC_%ED%95%B4%EC%A0%81%EB%8B%A8_-_%EC%9E%90%EC%9C%A0%EB%B6%84%EB%B0%9C(FootReeDom)
+
 
 
 
